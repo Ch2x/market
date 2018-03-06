@@ -36,29 +36,39 @@
             <title>message</title>
             <path d="M2 2.001v21.987h15.993l7.991 5.998v-5.998h3.999v-21.987h-27.983zM23.987 11.994h-15.99v-3.998h15.99v3.998zM23.987 17.992h-15.99v-3.998h15.99v3.998z"></path>
             </symbol>
+            <symbol id="icon-plus" viewBox="0 0 32 32">
+            <title>plus</title>
+            <path fill="#1296db" style="fill: var(--color1, #1296db)" d="M25.876 6.141c-2.642-2.629-6.154-4.077-9.89-4.077s-7.249 1.448-9.891 4.077c-2.643 2.63-4.099 6.128-4.099 9.85s1.456 7.22 4.098 9.85c2.642 2.629 6.155 4.077 9.891 4.077s7.249-1.448 9.89-4.077c2.644-2.631 4.1-6.129 4.099-9.851 0.001-3.721-1.454-7.219-4.098-9.849zM22.981 16.99h-5.996v5.996c0 0.553-0.448 0.999-0.999 0.999s-0.999-0.447-0.999-0.999v-5.996h-5.996c-0.552 0-0.999-0.448-0.999-0.999s0.448-0.999 0.999-0.999h5.996v-5.996c0-0.552 0.448-0.999 0.999-0.999s0.999 0.448 0.999 0.999v5.996h5.996c0.553 0 0.999 0.448 0.999 0.999s-0.447 0.999-0.999 0.999z"></path>
+            </symbol>
             </defs>
         </svg>
-        <section class="nav_item">
+        <section class="nav_item" @click="changView({path: '/home'})">
             <svg class="icon_style">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-home"></use>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('/home')!== -1?'#icon-home-active':'#icon-home'"></use>
             </svg>
             <span>首页</span>
         </section>
-        <section class="nav_item">
+        <section class="nav_item" @click="changView({path: '/sort'})">
             <svg class="icon_style">
-                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-sort"></use>
+                 <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('/sort')!== -1?'#icon-sort-active':'#icon-sort'"></use>
             </svg>
             <span>分类</span>
         </section>
-        <section class="nav_item">
+        <section class="nav_item nav_item-plus" @click="changView({path: '/release'})">
+            <svg class="icon-plus_style">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-plus"></use>
+            </svg>
+            <span>发布</span>
+        </section>
+        <section class="nav_item" @click="changView({path: '/message'})">
             <svg class="icon_style">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-message"></use>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('/message')!== -1?'#icon-message-active':'#icon-message'"></use>
             </svg>
             <span>消息</span>
         </section>
-        <section class="nav_item">
+        <section class="nav_item" @click="changView({path: '/mine'})">
             <svg class="icon_style">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-mine"></use>
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('/mine')!== -1?'#icon-mine-active':'#icon-mine'"></use>
             </svg>
             <span>我的</span>
         </section>
@@ -66,7 +76,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+
+        }
+    },
+    methods: {
+        changView(path) {
+            this.$router.push(path);
+        }
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -98,5 +119,18 @@ export default {};
     @include sc(0.45rem, #666);
   }
 }
+.nav_item-plus {
+    position: relative;
+    .icon-plus_style {
+        position: absolute;
+        @include wh(2.5rem, 2.5rem);
+        top: -22px;
+    }
+    span {
+        position: absolute;
+        bottom: 0;
+    }
+}
+
 </style>
 
