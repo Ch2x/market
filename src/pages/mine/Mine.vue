@@ -3,7 +3,7 @@
         <Header head-title="我的"></Header>
         <section>
             <section class="mine_top">
-                <router-link to="/home" class="mine_link">
+                <router-link :to="userInfo&&userInfo.user_id?'/userInfo':'/login'" class="mine_link">
                     <!-- <img src="../../assets/logo.png" class="mine_avatar"> -->
                     <span class="mine_avatar">
                         <svg class="mine_avatar_svg">
@@ -11,7 +11,7 @@
                         </svg>
                     </span>
                     <div class="mine_name">
-                        <p>abc</p>
+                        <p>{{userInfo?userInfo.name:'登录/注册'}}</p>
                     </div>
                     <span class="arrow">
                         <svg class="arrow-svg" fill="#fff">
@@ -45,12 +45,21 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { mapState } from 'vuex';
 
 export default {
     data() {
         return {
 
         }
+    },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
+    watch: {
+        
     },
 
     components: {

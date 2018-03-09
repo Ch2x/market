@@ -1,6 +1,6 @@
 <template>
     <div class="userInfo_page">
-        <Header></Header>
+        <Header go-back='true'></Header>
         <section class="userInfo">
             <section class="userInfo_section">
                 <input type="file" class="userInfo_upload">

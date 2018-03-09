@@ -3,27 +3,44 @@
         <Header go-back="true" head-title="登录"></Header>
         <form class="loginForm">
             <section class="input_container">
-                <input type="text" placeholder="账号">
+                <input type="text" placeholder="账号" v-model.lazy="userAccount">
             </section>
             <section class="input_container">
-                <input type="password" placeholder="密码">
+                <input type="password" placeholder="密码" v-model="password">
             </section>
         </form>
-        <div class="login_container">登录</div>
+        <div class="login_container" @click="login">登录</div>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
+import { mapMutations } from 'vuex';
 
 export default {
     data() {
         return {
-
+            userAccount: null,
+            password: null,
         }
     },
     components: {
         Header,
-    }
+    },
+    methods: {
+        ...mapMutations([
+            'saveUserInfo'
+        ]),
+        async login() {
+            if(!this.userAccount) {
+                return;
+            }else if(!this.password) {
+                return;
+            }else {
+                this.userInfo = await userLogin(this.userAccount,this.password);
+            }
+            this.saveUserInfo(this.userInfo);
+        }
+    },
 }
 </script>
 <style lang="scss" scoped>
