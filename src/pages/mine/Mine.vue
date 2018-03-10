@@ -11,7 +11,7 @@
                         </svg>
                     </span>
                     <div class="mine_name">
-                        <p>{{userInfo?userInfo.name:'登录/注册'}}</p>
+                        <p>{{login?userInfo.userName:'登录/注册'}}</p>
                     </div>
                     <span class="arrow">
                         <svg class="arrow-svg" fill="#fff">
@@ -55,7 +55,8 @@ export default {
     },
     computed: {
         ...mapState([
-            'userInfo'
+            'userInfo',
+            'login'
         ])
     },
     watch: {

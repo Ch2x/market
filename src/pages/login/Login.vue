@@ -15,6 +15,7 @@
 <script>
 import Header from "@/components/Header";
 import { mapMutations } from 'vuex';
+import { userLogin } from '@/service/api';
 
 export default {
     data() {
@@ -38,7 +39,10 @@ export default {
             }else {
                 this.userInfo = await userLogin(this.userAccount,this.password);
             }
-            this.saveUserInfo(this.userInfo);
+            if(this.userInfo.user_id) {
+                this.saveUserInfo(this.userInfo);
+                this.$router.go(-1);
+            }
         }
     },
 }
