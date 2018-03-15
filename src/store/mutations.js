@@ -10,5 +10,9 @@ export default {
     logout(state) {
         state.userInfo = {};
         state.login = false;
+    },
+
+    saveSort(state, payload) {
+        state.addSort = payload.sort;
     }
 }

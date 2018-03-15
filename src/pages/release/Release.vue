@@ -1,47 +1,55 @@
 <template>
     <div class="release_page">
-        <Header go-back="true" head-title="发布宝贝"></Header>
-        <form class="releaseForm">
+        <Header head-title="发布宝贝">
+          <router-link slot="cancel" to="/home" class="release_cancel">
+           <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cancel"></use>
+            </svg>
+          </router-link>
+        </Header>
+        <form class="releaseForm" enctype="multipart/form-data" action="post">
             <div class="container">
                 <section class="input_container">
-                    <input type="text" placeholder="标题 品类品牌类型都是买家喜欢搜索的">
+                    <input type="text" placeholder="标题 品类品牌类型都是买家喜欢搜索的" v-model="title">
                 </section>
                 <section class="textarea_container">
-                    <textarea placeholder="描述一下宝贝的细节或者故事"></textarea>
+                    <textarea placeholder="描述一下宝贝的细节或者故事" v-model="description"></textarea>
                 </section>
                 <section class="picture_container">
                     <ul class="pic_list">
                         <li class="pic_item" v-for="(item, index) in images" :key="index">
                             <img :src="item">
-                            <a href="">
-                                <span>x</span>
-                            </a>
+                            <div class="del-icon" @click="delImage(index)">
+                              <svg>
+                              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cancel"></use>
+                            </svg>
+                            </div>
                         </li>
                         <li class="pic_item">
-                            <div class="pic_addItem">
+                            <input type="file" name="file" accept="image/*" multiple="multiple" id="input_img" @change="onFileChange" style="display: none;"/>
+                            <label class="pic_addItem" for="input_img">
                                 <span class="pic_add">
                                 <svg>
                                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-add"></use>
                                 </svg>
                                 </span>
-                                <span class="pic_font">添加</span>
-                                <input type="file" accept="image/png" style="display: none;"/>
-                            </div>
+                                <span class="pic_font" for="input_img">添加</span>
+                            </label>
                         </li>
                     </ul>
                 </section>
             </div>
             <section>
-                <router-link to="/home" class="release_link">
+                <router-link to="/releaseSort" class="release_link">
                     <div class="name">
                         <p>分类</p>
                     </div>
-                        <span>选择分类</span>
+                        <span>{{addSort?addSort:'选择分类'}}</span>
                         <span class="arrow">
                             <svg class="arrow-svg" fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
                             </svg>
-                         </span>
+                        </span>
         
                 </router-link>
                 <div class="price_link">
@@ -49,7 +57,7 @@
                         <p>价格</p>
                     </div>
                         <!-- <span>开个价</span> -->
-                        <input type="text">
+                        <input type="text" placeholder="价格" v-model="price">
                         <!-- <span class="arrow">
                             <svg class="arrow-svg" fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -58,25 +66,71 @@
         
                 </div>
             </section>
+            <section class="releaseShop" @click="confirmShop">确定发布</section>
         </form>
-        <section class="releaseShop">确定发布</section>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
+import { mapState, mapMutation } from "Vuex";
+import { releaseProduct } from '@/service/api';
 
 export default {
   data() {
     return {
-      images: [
-        "../../assets/logo.png",
-        "../../assets/logo.png",
-        "../../assets/logo.png",
-        "../../assets/logo.png",
-        "../../assets/logo.png"
-      ]
+      images: [],
+      title: "",
+      description: "",
+      price: '',
     };
+  },
+  computed: {
+    ...mapState(
+      [
+      "addSort",
+      'userInfo',
+      ]
+    )
+  },
+  created() {
+  },
+  mounted() {
+    if(!(this.userInfo && this.userInfo.user_id)) {
+      this.$router.push('/login');
+    }
+  },
+  methods: {
+    onFileChange(event) {
+      var files = event.target.files;
+      console.log(files);
+      if (files.length === 0) return;
+      this.showImage(files);
+    },
+    showImage(files) {
+      if (typeof FileReader === "undefined") {
+        alert("您的浏览器不支持图片上传，请升级您的浏览器");
+        return false;
+      }
+      var image = new Image();
+      var self = this;
+      var leng = files.length;
+      for (var i = 0; i < leng; i++) {
+        var reader = new FileReader();
+        reader.readAsDataURL(files[i]);
+        reader.onload = function(e) {
+          self.images.push(e.target.result);
+        };
+      }
+    },
+    delImage(index) {
+      this.images.splice(index,1);
+    },
+    async confirmShop() {
+        let confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort, this.description, this.title, this.price);
+        this.$router.go(-1);
+    }
   },
   components: {
     Header
@@ -127,15 +181,23 @@ export default {
           @include fj(center);
           img {
             margin-bottom: 0.3rem;
-            @include wh(3.5rem, 3.5rem);
+            @include wh(3.8rem, 3.8rem);
           }
-          a {
-            display: inline-block;
+          .del-icon {
+            background-color: rgb(52, 158, 223);
+            border: 0.12rem solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: absolute;
             top: 0;
             left: 0;
-            @include wh(0.5rem, 0.5rem);
+            @include wh(1rem, 1rem);
             border-radius: 50%;
+            svg {
+              @include wh(60%, 60%);
+            }
           }
         }
       }
@@ -145,7 +207,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      @include wh(3.5rem, 3.5rem);
+      @include wh(3.8rem, 3.8rem);
       background-color: rgb(245, 245, 245);
       .pic_add {
         @include wh(1.2rem, 1.2rem);
@@ -194,8 +256,7 @@ export default {
     flex-grow: 1;
   }
   input {
-    width: 20%;
-    border: 1px solid #666;
+    width: 19%;
   }
 }
 .releaseShop {
@@ -209,6 +270,15 @@ export default {
   &:active {
     opacity: 0.8;
     background: #c1c1c1;
+  }
+}
+.release_cancel {
+  left: 0.5rem;
+  @include wh(0.6rem, 1rem);
+  line-height: 2.2rem;
+  margin-left: 0.4rem;
+  svg {
+    @include wh(100%, 100%);
   }
 }
 </style>

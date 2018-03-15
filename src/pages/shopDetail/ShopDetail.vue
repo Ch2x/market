@@ -1,6 +1,6 @@
 <template>
   <div class="shopDetail_page">
-      <Header></Header>
+      <Header go-back="true"></Header>
       <section class="shopDetail">
             <section class="shopDetail_top">
                     <!-- <img src="../../assets/logo.png" class="shopDetail_avatar"> -->
@@ -10,23 +10,16 @@
                         </svg>
                     </span>
                     <div class="shopDetail_name">
-                        <h5>abc</h5>
-                        <p>五个小时前来过</p>
+                        <h5>{{product_info.title}}</h5>
+                        <p>发布于{{product_info.releaseTime}}</p>
                     </div>
             </section>
             <section class="shopDetail_content">
-                <h2>￥88</h2>
-                <p>
-                    #2018兽医全国研究生入学考试书籍#
-                    各科统考书籍
-                    中农、南农自主命题复习资料
-                    各科视频课程
-                    华山5栋自习室自用书桌两张：大张50RMB；小桌30RMB
-                    还有各类笔记，高分考生经验，助你考研成功
-                </p>
+                <h2>{{product_info.price}}</h2>
+                <div class="shopDetail_description"><span>{{product_info.description}}</span></div>
             </section>
-            <section>
-                <img src="../../assets/logo.png">
+            <section class="shopDetail_img">
+                <img :src="item" v-for="(item, index) in product_info.images" :key="index">
             </section>
       </section>
   </div>
@@ -34,16 +27,31 @@
 
 <script>
 import Header from "@/components/Header";
+import { getProductDetail } from '@/service/api';
 
 export default {
   data() {
       return {
-
+          product_id: '',
+          product_info: [],
       }
   },
   components: {
       Header,
   },
+  created() {
+      this.product_id = this.$route.query.product_id;
+      console.log(this.$route.query);    
+  },
+  mounted() {
+      this.init();
+  },
+  methods: {
+      async init() {
+          let productDetail = await getProductDetail(this.product_id);
+          this.product_info = productDetail;
+      }
+  }
 }
 </script>
 
@@ -62,7 +70,7 @@ export default {
             border-bottom: .0625rem solid rgb(245,245,245);
             .shopDetail_avatar {
                 display: inline-block;
-                @include wh(2.5rem,2.5rem);
+                @include wh(2.5rem, 2.5rem);
                 border-radius: 50%;
                 vertical-align: middle;
                 .shopDetail_avatar_svg{
@@ -84,8 +92,18 @@ export default {
         }
     }
     .shopDetail_content {
+        display: flex;
+        flex-direction: column;
         h2 {
             @include sc(2rem, rgb(255,0,0));
+        }
+        .shopDetail_description {
+            width: 100%;
+        }
+    }
+    .shopDetail_img {
+        >img {
+            @include wh(100%, 15rem);
         }
     }
 </style>

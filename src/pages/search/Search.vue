@@ -2,8 +2,8 @@
   <div class="paddingTop search_page">
       <Header go-back='true' head-title="搜索"></Header>
       <form class="search_form">
-            <input type="search" name="search" placeholder="请输入商品名称" class="search_input">
-            <input type="submit" name="submit" class="search_submit" >
+            <input type="search" name="search" placeholder="请输入商品名称" class="search_input" v-model="searchValue">
+            <input type="submit" name="submit" class="search_submit" @click.prevent="submit">
       </form>
   </div>
 </template>
@@ -14,11 +14,17 @@ import Header from '@/components/Header';
 export default {
     data() {
         return {
-
+            searchValue: '',
         }
     },
     components: {
         Header,
+    },
+    methods: {
+        async submit() {
+
+        }
+
     }
 }
 </script>

@@ -3,11 +3,11 @@
         <Header head-title='分类'></Header>
         <section>
             <ul class="sortLists">
-                <li v-for="(item, index) in sortLists" :key="index">
-                    <router-link :to="{path: '/shopList', query: {name: item}}">
+                <router-link :to="{path: '/sortList', query: {name: item}}" v-for="(item, index) in sortLists" :key="index">
+                    <li>
                         <span>{{item}}</span>
-                    </router-link>
-                </li>
+                    </li>
+                </router-link>
             </ul>
         </section>
         <Footer></Footer>
@@ -38,7 +38,7 @@ export default {
         padding-top: 1.9rem;
     }
     .sortLists {
-        >li {
+        li {
             padding: .5rem .5rem;
             background-color: #fff;
             margin-bottom: .3rem;
