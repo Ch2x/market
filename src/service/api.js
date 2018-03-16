@@ -6,6 +6,12 @@ export const userLogin = (userName, password) => fetch('/user/login', {
     password
 }, 'POST');
 
+export const userEnroll = (userName, password, confirmPassword) => fetch('/user/registered', {
+    userName,
+    password,
+    confirmPassword,
+}, 'POST');
+
 export const userLogout = () => fetch('/user/logout', {}, 'GET');
 
 export const releaseProduct = (user_id, images, sort, description, title, price) => fetch('/product/release', {

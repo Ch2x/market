@@ -1,68 +1,61 @@
 <template>
-    <div class="login_page">
-        <Header go-back="true" head-title="登录"></Header>
-        <form class="loginForm">
+    <div class="enroll_page">
+        <Header go-back='true' head-title="注册"></Header>
+        <form class="enrollForm">
             <section class="input_container">
                 <input type="text" placeholder="账号" v-model.lazy="userAccount">
             </section>
             <section class="input_container">
                 <input type="password" placeholder="密码" v-model="password">
             </section>
+            <section class="input_container">
+                <input type="password" placeholder="确认密码" v-model="confirmPassword">
+            </section>
         </form>
-        <div class="login_container" @click="login">登录</div>
-        <div class="login_bottom">
-            <router-link :to="'/enroll'">
-                <div>新用户注册</div>
-            </router-link> 
-            <div>忘记密码？</div>
-        </div>
+        <div class="enroll_container" @click="enroll">注册</div>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
-import { mapMutations } from 'vuex';
-import { userLogin } from '@/service/api';
+import { userEnroll } from '@/service/api';
 
 export default {
     data() {
         return {
-            userAccount: null,
-            password: null,
+            userAccount: '',
+            password: '',
+            confirmPassword: '',
         }
     },
     components: {
         Header,
     },
     methods: {
-        ...mapMutations([
-            'saveUserInfo'
-        ]),
-        async login() {
+        async enroll() {
             if(!this.userAccount) {
                 return;
             }else if(!this.password) {
                 return;
+            }else if(!this.confirmPassword) {
+                return;
             }else {
-                this.userInfo = await userLogin(this.userAccount,this.password);
-            }
-            if(this.userInfo.user_id) {
-                this.saveUserInfo(this.userInfo);
+                const result = await userEnroll(this.userAccount, this.password, this.confirmPassword);
+                console.log(result);
                 this.$router.go(-1);
             }
         }
-    },
+    }
 }
 </script>
 <style lang="scss" scoped>
-@import '../../assets/style/mixin';
-
-    .login_page {
+@import '../../assets/style/mixin'; 
+.enroll_page {
         padding-top: 1.95rem;
         p, span, input{
             font-family: Helvetica Neue,Tahoma,Arial;
         }
     }
-    .loginForm {
+    .enrollForm {
         background-color: #fff;
         margin-top: .6rem;
         .input_container {
@@ -75,19 +68,15 @@ export default {
             } 
         }
     }
-    .login_container {
+    .enroll_container {
         margin: 0.5rem 1rem;
         @include sc(.7rem, #fff);
-        background-color: #4cd964;
+        background-color: #a72626;
         padding: .5rem 0;
         border: 1px;
         border-radius: 0.15rem;
         text-align: center;
     }
-    .login_bottom {
-        display: flex;
-        justify-content: space-around;
-        @include sc(.7rem, rgb(52,158,223));
-    }
 </style>
+
 

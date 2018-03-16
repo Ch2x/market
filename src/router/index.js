@@ -11,6 +11,7 @@ import SortList from '@/pages/sort/SortList'
 import Message from '@/pages/message/Message'
 import Release from '@/pages/release/Release'
 import Login from '@/pages/login/Login'
+import Enroll from '@/pages/login/Enroll'
 import ReleaseSort from '@/pages/release/ReleaseSort'
 
 Vue.use(Router)
@@ -79,6 +80,11 @@ export default new Router({
           path: '/login',
           name: Login,
           component: Login,
+        },
+        {
+          path: '/enroll',
+          name: Enroll,
+          component: Enroll,
         },
       ]
     }
