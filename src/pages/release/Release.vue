@@ -1,11 +1,11 @@
 <template>
     <div class="release_page">
         <Header head-title="发布宝贝">
-          <router-link slot="cancel" to="/home" class="release_cancel">
+          <span slot="cancel" @click="handleCancel" class="release_cancel">
            <svg>
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cancel"></use>
             </svg>
-          </router-link>
+          </span>
         </Header>
         <form class="releaseForm" enctype="multipart/form-data" action="post">
             <div class="container">
@@ -74,8 +74,9 @@
 
 <script>
 import Header from "@/components/Header";
-import { mapState, mapMutation } from "Vuex";
-import { releaseProduct } from '@/service/api';
+import AlterTip from '@/components/AlterTip'
+import { mapState, mapMutations } from "Vuex";
+import { releaseProduct, getProductDetail, updateProduct } from '@/service/api';
 
 export default {
   data() {
@@ -84,6 +85,7 @@ export default {
       title: "",
       description: "",
       price: '',
+      product_id: '',
     };
   },
   computed: {
@@ -99,9 +101,24 @@ export default {
   mounted() {
     if(!(this.userInfo && this.userInfo.user_id)) {
       this.$router.push('/login');
+    } 
+    if(this.$route.query.product_id) {
+      this.product_id = this.$route.query.product_id;
+      this.init();
     }
   },
   methods: {
+    ...mapMutations([
+        'saveSort',
+    ]),
+    async init() {
+      const result = await getProductDetail(this.product_id);
+      this.price = result.product.price;
+      this.description = result.product.description;
+      this.title = result.product.title;
+      this.images = result.product.images;
+      this.saveSort({sort: result.product.sort});
+    },
     onFileChange(event) {
       var files = event.target.files;
       console.log(files);
@@ -127,13 +144,21 @@ export default {
     delImage(index) {
       this.images.splice(index,1);
     },
+    handleCancel() {
+      this.$router.go(-1);
+    },
     async confirmShop() {
-        let confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort, this.description, this.title, this.price);
-        this.$router.go(-1);
+      if(this.$route.query.product_id) {
+        const result = await updateProduct(this.product_id, this.images, this.addSort, this.description, this.title, this.price);
+      }else {
+        const confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort, this.description, this.title, this.price);
+      }
+      this.$router.go(-1);
     }
   },
   components: {
-    Header
+    Header,
+    AlterTip
   }
 };
 </script>

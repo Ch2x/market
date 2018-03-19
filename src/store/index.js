@@ -10,6 +10,7 @@ const state = {
     userInfo: null, //用户信息
     login: false, //是否登录
     addSort: null, //添加分类
+    avatar: null,
 }
 
 export default new Vuex.Store({

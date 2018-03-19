@@ -3,11 +3,11 @@
         <Header go-back='true'></Header>
         <section class="userInfo">
             <section class="userInfo_section">
-                <input type="file" class="userInfo_upload">
+                <input type="file" class="userInfo_upload" @change="uploadAvatar">
                 <h2>头像</h2>
                 <div class="userInfo_div">
-                    <!-- <img  v-if="userInfo" :src="imgBaseUrl + userInfo.avatar" class="userInfo_div_top"> -->
-                    <span class="userInfo_div_top" >
+                    <img  v-if="avatar" :src="'http://localhost:3000/img/' + avatar" class="userInfo_div_top">
+                    <span class="userInfo_div_top" v-else>
                         <svg>
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
                         </svg>
@@ -19,7 +19,7 @@
                     </span>
                 </div>
             </section>
-            <router-link to="/profile/setusername" class="userInfo_name">
+            <!-- <router-link to="/profile/setusername" class="userInfo_name"> -->
                 <section class="userInfo_section userInfo_section2">
                     <h2>用户名</h2>
                     <div class="userInfo_div">
@@ -31,7 +31,7 @@
                         </span>
                     </div>
                 </section>
-            </router-link>
+            <!-- </router-link> -->
             <section class="exitLogin" @click="exitLogin">退出登录</section>
         </section>
     </div>
@@ -45,7 +45,9 @@ import { delStore } from '@/config/mUtil'
 
 export default {
   data() {
-    return {};
+    return {
+   
+    };
   },
 
   components: {
@@ -55,21 +57,47 @@ export default {
   computed: {
       ...mapState([
           'userInfo',
+          'avatar'
       ])
   },
 
   methods: {
       ...mapMutations([
-          'logout'
+          'logout',
+          'changeAvatar'
       ]),
+
+      async uploadAvatar() {
+          if(this.userInfo) {
+              let input = document.querySelector('.userInfo_upload');
+              let data = new FormData();
+              data.append('file', input.files[0]);
+              try{
+                  console.log('start')
+                  let response = await fetch('http://localhost:3000/user/updateAvatar', {
+                      method: "POST",
+                      credentials: 'include',
+                      mode: 'cors',
+                      body: data,
+                  })
+                  let result = await response.json();
+                  if(result.status == 1) {
+                      this.changeAvatar({avatar: result.image_path});
+                  }
+              }catch(err) {
+                  throw new Error(err);
+              }
+          }
+      },
 
       async exitLogin() {
           this.logout();
           this.$router.go(-1);
           delStore('user_id');
           await userLogout();
-      }
-  }
+      },
+
+  },
 };
 </script>
 

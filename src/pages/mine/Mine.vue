@@ -4,8 +4,8 @@
         <section>
             <section class="mine_top">
                 <router-link :to="userInfo&&userInfo.user_id?'/userInfo':'/login'" class="mine_link">
-                    <!-- <img src="../../assets/logo.png" class="mine_avatar"> -->
-                    <span class="mine_avatar">
+                    <img  v-if="userInfo" :src="'http://localhost:3000/img/' + avatar" class="mine_avatar">
+                    <span class="mine_avatar" v-else>
                         <svg class="mine_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
                         </svg>
@@ -21,14 +21,14 @@
                 </router-link>
             </section>
             <section class="mine_list">
-                <router-link to='/home' class="myrelease">
+                <router-link to='/myPosted' class="myrelease">
                     <aside>
                         <svg fill="#4aa5f0">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
                         </svg>
                     </aside>
                     <div class="myrelease-div">
-                        <span>我发布的</span>
+                        <span>我的发布</span>
                         <span class="myrelease-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -57,7 +57,8 @@ export default {
     computed: {
         ...mapState([
             'userInfo',
-            'login'
+            'login',
+            'avatar',
         ])
     },
     watch: {

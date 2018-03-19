@@ -3,25 +3,30 @@
       <Header go-back="true"></Header>
       <section class="shopDetail">
             <section class="shopDetail_top">
-                    <!-- <img src="../../assets/logo.png" class="shopDetail_avatar"> -->
-                    <span class="shopDetail_avatar">
+                    <img :src="'http://localhost:3000/img/' + product_user.avatar" class="shopDetail_avatar" v-if="product_user.avatar">
+                    <span class="shopDetail_avatar" v-else>
                         <svg class="shopDetail_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
                         </svg>
                     </span>
                     <div class="shopDetail_name">
-                        <h5>{{product_info.title}}</h5>
+                        <h5>{{product_user.userName}}</h5>
                         <p>发布于{{product_info.releaseTime}}</p>
                     </div>
             </section>
             <section class="shopDetail_content">
-                <h2>{{product_info.price}}</h2>
+                <h2>￥{{product_info.price}}</h2>
                 <div class="shopDetail_description"><span>{{product_info.description}}</span></div>
             </section>
-            <section class="shopDetail_img">
-                <img :src="item" v-for="(item, index) in product_info.images" :key="index">
+            <section>
+                <div v-for="(item, index) in product_info.images" :key="index" class="shopDetail_img">
+                    <img :src="item">
+                </div>
             </section>
       </section>
+      <footer class="shopDetail_footer">
+
+      </footer>
   </div>
 </template>
 
@@ -33,7 +38,8 @@ export default {
   data() {
       return {
           product_id: '',
-          product_info: [],
+          product_info: {},
+          product_user: {},
       }
   },
   components: {
@@ -49,7 +55,8 @@ export default {
   methods: {
       async init() {
           let productDetail = await getProductDetail(this.product_id);
-          this.product_info = productDetail;
+          this.product_info = productDetail.product;
+          this.product_user = productDetail.userInfo;
       }
   }
 }
@@ -95,16 +102,31 @@ export default {
         display: flex;
         flex-direction: column;
         h2 {
-            @include sc(2rem, rgb(255,0,0));
+            margin: .5rem 0;
+            @include sc(1.3rem, rgb(255,59,48));
         }
         .shopDetail_description {
             width: 100%;
         }
     }
     .shopDetail_img {
+        position: relative;
+        padding-bottom: 100%;
+        margin-top: .3rem;
         >img {
-            @include wh(100%, 15rem);
+            position: absolute;
+            @include wh(100%, 100%);
         }
+    }
+    .shopDetail_footer {
+        background-color: #fff;
+        position: fixed;
+        z-index: 99;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        @include wh(100%, 1.95rem);
+        box-shadow: 0 -0.026667rem 0.053333rem rgba(0, 0, 0, 0.1);
     }
 </style>
 

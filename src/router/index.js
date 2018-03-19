@@ -5,6 +5,7 @@ import Home from '@/pages/home/Home'
 import Search from '@/pages/search/Search'
 import ShopDetail from '@/pages/shopDetail/ShopDetail'
 import Mine from '@/pages/mine/Mine'
+import MyPosted from '@/pages/mine/MyPosted'
 import UserInfo from '@/pages/mine/UserInfo'
 import Sort from '@/pages/sort/Sort'
 import SortList from '@/pages/sort/SortList'
@@ -12,7 +13,9 @@ import Message from '@/pages/message/Message'
 import Release from '@/pages/release/Release'
 import Login from '@/pages/login/Login'
 import Enroll from '@/pages/login/Enroll'
+import EditPass from '@/pages/login/EditPass'
 import ReleaseSort from '@/pages/release/ReleaseSort'
+
 
 Vue.use(Router)
 
@@ -86,6 +89,16 @@ export default new Router({
           name: Enroll,
           component: Enroll,
         },
+        {
+          path: '/editPass',
+          name: EditPass,
+          component: EditPass,
+        },
+        {
+          path: '/myPosted',
+          name: MyPosted,
+          component: MyPosted,
+        }
       ]
     }
 

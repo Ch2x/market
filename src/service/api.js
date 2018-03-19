@@ -32,3 +32,17 @@ export const getProductLists = (sort) => {
 }
 
 export const getProductDetail = (id) => fetch('/product/getDetail', { product_id: id }, 'GET');
+
+export const searchProduct = (payload) => fetch('/product/searchProduct', {...payload}, "GET");
+
+export const getProductUserLists = (payload) => fetch('/product/getProducts', {...payload}, 'GET');
+
+export const delProduct = (user_id, product_id) => fetch(`/product/delProduct/${user_id}/${product_id}`, {}, "DELETE")
+
+export const updateProduct = (product_id, images, sort, description, title, price) => fetch(`/product/updateProduct/${product_id}`, {
+    images,
+    sort,
+    description,
+    title,
+    price,
+}, 'POST');

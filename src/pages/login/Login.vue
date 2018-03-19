@@ -14,7 +14,9 @@
             <router-link :to="'/enroll'">
                 <div>新用户注册</div>
             </router-link> 
-            <div>忘记密码？</div>
+            <router-link to="/editPass">
+                <div>忘记密码？</div>
+            </router-link>
         </div>
     </div>
 </template>

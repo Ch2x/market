@@ -19,6 +19,7 @@ export default {
       ShopList,
   },
   created() {
+      console.log('chongxion');
       this.sortName = this.$route.query.name;
   },
 }
