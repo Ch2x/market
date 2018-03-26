@@ -24,110 +24,232 @@
                 </div>
             </section>
       </section>
+          <section class="shop_comment">
+                <h5 class="shop_comment_title">
+                    <span>留言</span>
+                    <span>({{comment.length}})</span>
+                </h5>
+                <form class="comment_form">
+                    <input type="text" name="text" placeholder="看对眼就留言，问问更多细节" class="text_input" v-model="textValue" @blur="changeFocus(false)" v-focus="focusComment">
+                    <input type="submit" name="submit" value="发送" class="text_submit" @click.prevent="sendComment">
+                </form>
+                <ul>
+                  <li v-for="item in comment" :key="item.product_id" @click="replayComment(item.from_uid)">
+                    <section class="shop_comment_item">
+                    <div class="comment_detail">
+                        <span>{{item.from_name}}</span>
+                        <span v-if="item.to_name">回复 {{item.to_name}}</span>
+                        :<span>{{item.content}}</span>
+                    </div>
+                  </section>
+                  </li>
+                </ul>
+      </section>
       <footer class="shopDetail_footer">
-
+          <section class="shopDetail_icon" @click="changeFocus(true)">
+              <svg>
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-comment"></use>
+              </svg>
+              <span>留言</span>
+          </section>
       </footer>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
-import { getProductDetail } from '@/service/api';
+import { getProductDetail, postComment } from "@/service/api";
+import { mapState } from 'Vuex';
 
 export default {
   data() {
-      return {
-          product_id: '',
-          product_info: {},
-          product_user: {},
+    return {
+      product_id: "",
+      product_info: {},
+      product_user: {},
+      textValue: '',
+      focusComment: false,
+      comment: [],
+      replyId: '',
+      replyUser: '',
+    };
+  },
+  directives: {
+    focus: {
+      // 指令的定义
+        update: function (el, {value}) {
+          if(value) {
+            el.focus()
+          }
+        }
       }
+  },
+  computed: {
+    ...mapState([
+      'userInfo',
+    ])
   },
   components: {
-      Header,
+    Header
   },
   created() {
-      this.product_id = this.$route.query.product_id;
-      console.log(this.$route.query);    
+    this.product_id = this.$route.query.product_id;
+    console.log(this.$route.query);
   },
   mounted() {
-      this.init();
+    this.init();
   },
   methods: {
-      async init() {
-          let productDetail = await getProductDetail(this.product_id);
-          this.product_info = productDetail.product;
-          this.product_user = productDetail.userInfo;
+    async init() {
+      let productDetail = await getProductDetail(this.product_id);
+      this.product_info = productDetail.product;
+      this.product_user = productDetail.userInfo;
+      this.comment = productDetail.comment;
+      console.log(productDetail.comment);
+    },
+    changeFocus(flag) {
+      console.log(flag);
+      this.focusComment = flag;
+    },
+    async sendComment() {
+      let result = await postComment(this.product_id, this.textValue, this.userInfo.user_id, this.replyId);
+      if(result.status === 1) {
+        console.log('评论成功');
+        this.init();
       }
+      this.replyId = '';
+      this.textValue = '';
+    },
+    replayComment(to_uid) {
+      console.log(to_uid);
+      if(to_uid === this.userInfo.user_id){
+        this.replyId = '';
+        return;
+      } 
+      this.focusComment = true;
+      this.replyId = to_uid;
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 @import "../../assets/style/mixin";
 
-    .shopDetail_page {
-        padding-top: 1.95rem;
-        background: #fff;
+.shopDetail_page {
+  padding: 1.95rem 0 2.3rem;
+  
+}
+.shopDetail {
+  background-color: #fff;
+  padding: 0 0.6rem .6rem;
+  .shopDetail_top {
+    display: flex;
+    padding: 0.666667rem 0;
+    border-bottom: 0.0625rem solid rgb(245, 245, 245);
+    .shopDetail_avatar {
+      display: inline-block;
+      @include wh(2.5rem, 2.5rem);
+      border-radius: 50%;
+      vertical-align: middle;
+      .shopDetail_avatar_svg {
+        background: #ffffff;
+        border-radius: 50%;
+        @include wh(2.5rem,2.5rem);
+      }
     }
-    .shopDetail {
-        padding: 0 .6rem;
-        .shopDetail_top {
-            display: flex;
-            padding: .666667rem 0;
-            border-bottom: .0625rem solid rgb(245,245,245);
-            .shopDetail_avatar {
-                display: inline-block;
-                @include wh(2.5rem, 2.5rem);
-                border-radius: 50%;
-                vertical-align: middle;
-                .shopDetail_avatar_svg{
-                    background: #ffffff;
-                    border-radius:50%;
-                    @include wh(2.5rem,2.5rem);
-                }
-            }
-            .shopDetail_name {
-                margin-left: .48rem;
-                -webkit-box-flex: 1;
-                -ms-flex-positive: 1;
-                flex-grow: 1;
-                p {
-                    font-weight:700;
-                    @include sc(.8rem,rgb(12, 2, 2));
-                }
-            }
-        }
+    .shopDetail_name {
+      margin-left: 0.48rem;
+      -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      p {
+        font-weight: 700;
+        @include sc(0.8rem,rgb(12, 2, 2));
+      }
     }
-    .shopDetail_content {
-        display: flex;
-        flex-direction: column;
-        h2 {
-            margin: .5rem 0;
-            @include sc(1.3rem, rgb(255,59,48));
-        }
-        .shopDetail_description {
-            width: 100%;
-        }
+  }
+}
+.shopDetail_content {
+  display: flex;
+  flex-direction: column;
+  h2 {
+    margin: 0.5rem 0;
+    @include sc(1.3rem, rgb(255,59,48));
+  }
+  .shopDetail_description {
+    width: 100%;
+  }
+}
+.shopDetail_img {
+  position: relative;
+  padding-bottom: 100%;
+  margin-top: 0.3rem;
+  > img {
+    position: absolute;
+    @include wh(100%, 100%);
+  }
+}
+.shopDetail_footer {
+  background-color: #fff;
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @include wh(100%, 1.95rem);
+  box-shadow: 0 -0.026667rem 0.053333rem rgba(0, 0, 0, 0.1);
+  padding: 0 0.6rem;
+}
+.shopDetail_icon {
+  display: flex;
+  @include wh(2.5rem, 100%);
+  align-items: center;
+  > svg {
+    @include wh(0.9rem, 0.9rem);
+  }
+  > span {
+    @include sc(0.6rem, #000);
+  }
+}
+.shop_comment {
+    margin-top: .3rem;
+    background-color: #fff;
+    padding: 0 .6rem;
+    .shop_comment_title {
+        height: 1.8rem;
+        line-height: 1.8rem;
+        border-bottom: 0.0625rem solid rgb(245, 245, 245);
     }
-    .shopDetail_img {
-        position: relative;
-        padding-bottom: 100%;
-        margin-top: .3rem;
-        >img {
-            position: absolute;
-            @include wh(100%, 100%);
-        }
+    .shop_comment_item {
+      display: flex;
+      border-bottom: 0.0625rem solid rgb(245, 245, 245);
+      padding: .3rem 0;
+      font-size: .8rem;
     }
-    .shopDetail_footer {
-        background-color: #fff;
-        position: fixed;
-        z-index: 99;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        @include wh(100%, 1.95rem);
-        box-shadow: 0 -0.026667rem 0.053333rem rgba(0, 0, 0, 0.1);
-    }
+}
+.comment_form {
+  padding: .6rem 0;
+  display: flex;
+  input {
+    height: 1.6rem;
+  }
+  .text_input {
+    flex: 4;
+    border-radius: .125rem;
+    font-weight: bold;
+    padding: 0 0.25rem;
+    @include sc(0.65rem, #333);
+    background-color: #f2f2f2;  
+  }
+  .text_submit {
+    flex: 1;
+    @include sc(0.65rem, #fff);
+    border-radius: 0.125rem;
+    background-color: #3190e8;
+    font-weight: bold;
+  }
+}
 </style>
 
 

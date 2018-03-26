@@ -46,3 +46,10 @@ export const updateProduct = (product_id, images, sort, description, title, pric
     title,
     price,
 }, 'POST');
+
+export const postComment = (product_id, content, from_uid, to_uid) => fetch('/comment/postComment', {
+    product_id, 
+    content, 
+    from_uid, 
+    to_uid
+}, 'POST');
