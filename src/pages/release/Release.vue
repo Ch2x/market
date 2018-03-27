@@ -68,6 +68,7 @@
             </section>
             <section class="releaseShop" @click="confirmShop">确定发布</section>
         </form>
+        <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip" ></alter-tip>
         <router-view></router-view>
     </div>
 </template>
@@ -86,7 +87,13 @@ export default {
       description: "",
       price: '',
       product_id: '',
+      alterText: '',
+      showAlert: false,
     };
+  },
+  components: {
+    Header,
+    AlterTip
   },
   computed: {
     ...mapState(
@@ -148,18 +155,30 @@ export default {
       this.$router.go(-1);
     },
     async confirmShop() {
+      if(this.title.length === 0 ) {
+        this.showAlert = true;
+        this.alterText = '标题不能空';
+        return;
+      } else if(this.description.length === 0) {
+        this.showAlert = true;
+        this.alterText = '内容不能空';
+        return;
+      } else if(this.images.length === 0) {
+        this.showAlert = true;
+        this.alterText = '图片不能空';
+        return;
+      } 
       if(this.$route.query.product_id) {
         const result = await updateProduct(this.product_id, this.images, this.addSort, this.description, this.title, this.price);
       }else {
         const confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort, this.description, this.title, this.price);
       }
       this.$router.go(-1);
+    },
+    closeTip() {
+      this.showAlert = false;
     }
   },
-  components: {
-    Header,
-    AlterTip
-  }
 };
 </script>
 <style lang="scss" scoped>

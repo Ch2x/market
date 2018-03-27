@@ -53,3 +53,5 @@ export const postComment = (product_id, content, from_uid, to_uid) => fetch('/co
     from_uid, 
     to_uid
 }, 'POST');
+
+export const getMyMessage = () => fetch('/comment/getMyMessage', {}, "GET");

@@ -11,18 +11,23 @@ export default {
         return {
 
         }
-        props: ['alterText']
+    },
+    props: ['alterText'],
+    mounted() {
+        this.init();
+    },
+    methods: {
+        init() {
+            const self = this;
+            setTimeout(function() {
+                self.$emit('closeTip');
+            }, 4000);
+        }
     }
 }
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/mixin";
-    @keyframes tipMove{
-       0%   { transform: scale(1) }
-       35%  { transform: scale(.8) }
-       70%  { transform: scale(1.1) }
-       100% { transform: scale(1) }
-    }
     .AlterTip {
         position: fixed;
     	top: 0;
@@ -31,15 +36,16 @@ export default {
         bottom: 0;
         z-index: 200;
         .Alter-content {
-            animation: tipMove .4s ;
-            background-color: rgba(128, 128, 128, 0.5);
+            height: 1.8rem;
+            background-color: rgba(29, 29, 29, 0.623);
             position: absolute;
-            padding: 0 .6rem;
+            padding: 0 .8rem;
             bottom: 25%;
             left: 50%;
             transform: translate(-50%, 50%);
             >span {
-                @include sc(.8rem, #000);
+                line-height: 1.8rem;
+                @include sc(.5rem, #fff);
             }
         }
     }

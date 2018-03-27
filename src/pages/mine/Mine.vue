@@ -4,7 +4,7 @@
         <section>
             <section class="mine_top">
                 <router-link :to="userInfo&&userInfo.user_id?'/userInfo':'/login'" class="mine_link">
-                    <img  v-if="userInfo" :src="'http://localhost:3000/img/' + avatar" class="mine_avatar">
+                    <img  v-if="userInfo" :src="'http://192.168.1.167:3000/img/' + avatar" class="mine_avatar">
                     <span class="mine_avatar" v-else>
                         <svg class="mine_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>

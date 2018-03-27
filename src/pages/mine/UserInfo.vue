@@ -6,7 +6,7 @@
                 <input type="file" class="userInfo_upload" @change="uploadAvatar">
                 <h2>头像</h2>
                 <div class="userInfo_div">
-                    <img  v-if="avatar" :src="'http://localhost:3000/img/' + avatar" class="userInfo_div_top">
+                    <img  v-if="avatar" :src="'http://192.168.1.167:3000/img/' + avatar" class="userInfo_div_top">
                     <span class="userInfo_div_top" v-else>
                         <svg>
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -74,7 +74,7 @@ export default {
               data.append('file', input.files[0]);
               try{
                   console.log('start')
-                  let response = await fetch('http://localhost:3000/user/updateAvatar', {
+                  let response = await fetch('http://192.168.1.167:3000/user/updateAvatar', {
                       method: "POST",
                       credentials: 'include',
                       mode: 'cors',
