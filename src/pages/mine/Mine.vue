@@ -21,7 +21,7 @@
                 </router-link>
             </section>
             <section class="mine_list">
-                <router-link to='/myPosted' class="myrelease">
+                <section  class="myrelease" @click="changeView({path:'/myPosted'})">
                     <aside>
                         <svg fill="#4aa5f0">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
@@ -35,7 +35,7 @@
                             </svg>
                         </span>
                     </div>
-                </router-link>
+                </section>
             </section>
         </section>
         <Footer></Footer>
@@ -64,7 +64,15 @@ export default {
     watch: {
         
     },
-
+    methods: {
+        changeView(path) {
+            if(!this.userInfo) {
+                this.$router.push('/login');
+            } else {
+                this.$router.push(path);
+            }
+        }
+    },
     components: {
         Header,
         Footer,

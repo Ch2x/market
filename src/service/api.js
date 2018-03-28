@@ -54,4 +54,8 @@ export const postComment = (product_id, content, from_uid, to_uid) => fetch('/co
     to_uid
 }, 'POST');
 
-export const getMyMessage = () => fetch('/comment/getMyMessage', {}, "GET");
+export const getMyMessage = (payload) => fetch('/comment/getMyMessage', {...payload}, "GET");
+
+export const addCart = (payload) => fetch('/cart/addCart', {...payload}, "POST"); 
+
+export const getAddState = (user_id, product_id) => fetch(`/cart/getAddState/${user_id}/${product_id}`, {}, "GET");

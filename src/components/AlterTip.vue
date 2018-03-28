@@ -21,7 +21,7 @@ export default {
             const self = this;
             setTimeout(function() {
                 self.$emit('closeTip');
-            }, 4000);
+            }, 2000);
         }
     }
 }

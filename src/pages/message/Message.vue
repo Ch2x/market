@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         async init() {
-            const result = await getMyMessage();
+            const result = await getMyMessage({user_id: this.userInfo.user_id});
             this.list = result;
         }
     }
@@ -75,7 +75,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/mixin";
 .message_page {
-    padding-top: 1.95rem;
+    padding: 1.95rem 0;
 }
 .message_item {
     display: flex;

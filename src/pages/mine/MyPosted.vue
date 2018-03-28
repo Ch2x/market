@@ -45,15 +45,11 @@ export default {
         ])
     },
     mounted() {
-        if(!(this.userInfo && this.userInfo.user_id)) {
-            this.$router.push('/login');
-        } else {
-            this.init();
-        }
+        this.init();
     },
     methods: {
         async init() {
-            const result = await getProductUserLists();
+            const result = await getProductUserLists({user_id: this.userInfo.user_id});
             this.postedList = result;
         },
         async delProduct(product_id, index) {

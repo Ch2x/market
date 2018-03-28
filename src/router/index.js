@@ -15,6 +15,7 @@ import Login from '@/pages/login/Login'
 import Enroll from '@/pages/login/Enroll'
 import EditPass from '@/pages/login/EditPass'
 import ReleaseSort from '@/pages/release/ReleaseSort'
+import ShopCart from '@/pages/shopCart/ShopCart'
 
 
 Vue.use(Router)
@@ -98,6 +99,11 @@ export default new Router({
           path: '/myPosted',
           name: MyPosted,
           component: MyPosted,
+        },
+        {
+          path: '/shopCart',
+          name: ShopCart,
+          component: ShopCart,
         }
       ]
     }

@@ -76,16 +76,30 @@
 </template>
 
 <script>
+import { mapState } from 'Vuex'
 export default {
     data() {
         return {
 
         }
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     methods: {
         changView(path) {
-            this.$router.push(path);
-        }
+            if(!this.userInfo) {
+                if(path.path === '/release' || path.path === '/message') {
+                    this.$router.push('/login');
+                } else {
+                    this.$router.push(path);
+                }
+            }else {
+                this.$router.push(path);
+            }
+        }   
     },
 };
 </script>

@@ -106,9 +106,6 @@ export default {
   created() {
   },
   mounted() {
-    if(!(this.userInfo && this.userInfo.user_id)) {
-      this.$router.push('/login');
-    } 
     if(this.$route.query.product_id) {
       this.product_id = this.$route.query.product_id;
       this.init();

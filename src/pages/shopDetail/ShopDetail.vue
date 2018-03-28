@@ -30,11 +30,11 @@
                     <span>({{comment.length}})</span>
                 </h5>
                 <form class="comment_form">
-                    <input type="text" name="text" placeholder="看对眼就留言，问问更多细节" class="text_input" v-model="textValue" @blur="changeFocus(false)" v-focus="focusComment">
+                    <input type="text" name="text" :placeholder="replyUser" class="text_input" v-model="textValue" @blur="changeFocus(false)" v-focus="focusComment"  @click="checkLogin">
                     <input type="submit" name="submit" value="发送" class="text_submit" @click.prevent="sendComment">
                 </form>
                 <ul>
-                  <li v-for="item in comment" :key="item.product_id" @click="replayComment(item.from_uid)">
+                  <li v-for="item in comment" :key="item.product_id" @click="replayComment(item.from_uid, item.from_name)">
                     <section class="shop_comment_item">
                     <div class="comment_detail">
                         <span>{{item.from_name}}</span>
@@ -52,13 +52,17 @@
               </svg>
               <span>留言</span>
           </section>
+          <section class="shopDetail_type" v-if="showButton">
+             <button @click="addCart" disabled="!addState">{{addState?'已加入购物车':'加入购物车'}}</button>
+             <button>去结算</button>
+          </section>
       </footer>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
-import { getProductDetail, postComment } from "@/service/api";
+import { getProductDetail, postComment, addCart, getAddState } from "@/service/api";
 import { mapState } from 'Vuex';
 
 export default {
@@ -71,7 +75,9 @@ export default {
       focusComment: false,
       comment: [],
       replyId: '',
-      replyUser: '',
+      replyUser: '看对眼就留言，问问更多细节',
+      showButton: true,
+      addState: false,
     };
   },
   directives: {
@@ -105,13 +111,39 @@ export default {
       this.product_info = productDetail.product;
       this.product_user = productDetail.userInfo;
       this.comment = productDetail.comment;
-      console.log(productDetail.comment);
+      if(this.product_info.user_id === this.userInfo.user_id) {
+        this.showButton = false;
+      } else {
+        const result = await getAddState(this.userInfo.user_id, this.product_id);
+        if(result.status === 1) {
+          this.addState = true
+          console.log(1);
+        }
+      }
+    },
+    async addCart() {
+      if(!this.userInfo) {
+        this.$router.push('/login');
+        return;
+      }
+      const result = await addCart({
+        product_id: this.product_id,
+        user_id: this.userInfo.user_id,
+      });
     },
     changeFocus(flag) {
-      console.log(flag);
-      this.focusComment = flag;
+      if(!this.userInfo) {
+        this.$router.push('/login');
+      }else {
+        this.focusComment = flag;
+        this.replyUser = '看对眼就留言，问问更多细节';
+      }
     },
     async sendComment() {
+      if(!this.userInfo) {
+        this.$router.push('/login');
+        return;
+      }
       let result = await postComment(this.product_id, this.textValue, this.userInfo.user_id, this.replyId);
       if(result.status === 1) {
         console.log('评论成功');
@@ -120,14 +152,24 @@ export default {
       this.replyId = '';
       this.textValue = '';
     },
-    replayComment(to_uid) {
-      console.log(to_uid);
+    replayComment(to_uid, name) {
+      if(!this.userInfo) {
+        this.$router.push('/login');
+        return;
+      }
       if(to_uid === this.userInfo.user_id){
         this.replyId = '';
         return;
       } 
+      this.replyUser = '回复@' + name;
       this.focusComment = true;
       this.replyId = to_uid;
+    },
+    checkLogin() {
+      if(!this.userInfo) {
+        this.$router.push('/login');
+        return;
+      }
     }
   }
 };
@@ -191,6 +233,7 @@ export default {
   }
 }
 .shopDetail_footer {
+  display: flex;
   background-color: #fff;
   position: fixed;
   z-index: 99;
@@ -200,6 +243,8 @@ export default {
   @include wh(100%, 1.95rem);
   box-shadow: 0 -0.026667rem 0.053333rem rgba(0, 0, 0, 0.1);
   padding: 0 0.6rem;
+  justify-content: space-between;
+  align-items: center;
 }
 .shopDetail_icon {
   display: flex;
@@ -212,6 +257,19 @@ export default {
     @include sc(0.6rem, #000);
   }
 }
+
+.shopDetail_type {
+  >button {
+    background-color: #4cd964;
+            padding: .3rem .6rem;
+            text-align: center;
+            @include sc(.6rem, #fff);
+            border-radius: 0.1rem;
+            border: 1px;
+  }
+}
+
+// 评论
 .shop_comment {
     margin-top: .3rem;
     background-color: #fff;

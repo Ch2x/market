@@ -9,7 +9,7 @@ export default {
     },
 
     logout(state) {
-        state.userInfo = {};
+        state.userInfo = null;
         state.login = false;
     },
 

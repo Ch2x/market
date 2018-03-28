@@ -13,10 +13,12 @@
             </section>
         </form>
         <div class="enroll_container" @click="enroll">注册</div>
+        <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
+import AlterTip from '@/components/AlterTip'
 import { userEnroll } from '@/service/api';
 
 export default {
@@ -25,25 +27,49 @@ export default {
             userAccount: '',
             password: '',
             confirmPassword: '',
+            showAlert: false,
+            alterText: '',
         }
     },
     components: {
         Header,
+        AlterTip,
     },
     methods: {
         async enroll() {
             if(!this.userAccount) {
+                this.showAlert = true;
+                this.alterText = '用户名不能为空';
                 return;
             }else if(!this.password) {
+                this.alterText = '密码不能为空';
+                this.showAlert = true;
                 return;
             }else if(!this.confirmPassword) {
+                this.alterText = '密码不能为空';
+                this.showAlert = true;
+                return;
+            }else if(this.confirmPassword!==this.password) {
+                this.alterText = '两次密码不一致';
+                this.showAlert = true;
                 return;
             }else {
                 const result = await userEnroll(this.userAccount, this.password, this.confirmPassword);
-                console.log(result);
-                this.$router.go(-1);
+                if(result.status === 1) {
+                    this.alterText = result.message;
+                    this.showAlert = true;
+                    this.$router.go(-1);
+                    return;
+                }else if(result.error === 'ERROR_USERNAME') {
+                    this.alterText = result.message;
+                    this.showAlert = true;
+                    return;
+                }
             }
-        }
+        },
+        closeTip() {
+            this.showAlert = false;
+        },
     }
 }
 </script>
@@ -71,7 +97,7 @@ export default {
     .enroll_container {
         margin: 0.5rem 1rem;
         @include sc(.7rem, #fff);
-        background-color: #a72626;
+        background-color: #FF3D03;
         padding: .5rem 0;
         border: 1px;
         border-radius: 0.15rem;

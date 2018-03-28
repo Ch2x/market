@@ -16,6 +16,13 @@
         </div>
         <ShopList></ShopList>
         <Footer></Footer>
+        <router-link v-if="userInfo" to="/shopCart">
+          <section class="home_cart">
+          <svg>
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
+          </svg>
+        </section>
+        </router-link>
     </div>
 </template>
 
@@ -26,6 +33,7 @@ import Footer from "@/components/Footer";
 import ShopList from "@/components/ShopList";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { getProductLists } from "@/service/api";
+import { mapState } from "Vuex";
 
 export default {
   data() {
@@ -56,16 +64,19 @@ export default {
     swiperSlide,
     ShopList
   },
+  computed: {
+    ...mapState([
+      'userInfo',
+    ])
+  },
   mounted() {
     this.init();
   },
 
   methods: {
     async init() {
-      let lists = await getProductLists();
-      console.log(lists, 1);
-      this.productLists = lists;
-    }
+      
+    },
   }
 };
 </script>
@@ -89,5 +100,20 @@ export default {
 }
 .home_swiper {
   @include wh(100%, 8rem);
+}
+.home_cart {
+  background-color: #FFF;
+  position: fixed;
+  bottom: 4rem;
+  right: .8rem;
+  border-radius: 50%;
+  box-shadow: 0 -0.026667rem 0.053333rem rgba(0, 0, 0, 0.1);
+  @include wh(1.8rem, 1.8rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >svg {
+    @include wh(60%, 60%);
+  }
 }
 </style>

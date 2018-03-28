@@ -23,7 +23,7 @@
                 <section class="userInfo_section userInfo_section2">
                     <h2>用户名</h2>
                     <div class="userInfo_div">
-                        <p>{{userInfo.userName}}</p>
+                        <p>{{userInfo?userInfo.userName:''}}</p>
                         <span class="userInfo_div_bottom">
                             <svg fill="#d8d8d8">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -91,10 +91,12 @@ export default {
       },
 
       async exitLogin() {
-          this.logout();
-          this.$router.go(-1);
-          delStore('user_id');
-          await userLogout();
+          const result = await userLogout();
+          if(result.status === 1) {
+              this.logout();
+              delStore('user_id');
+              this.$router.go(-1);
+          }
       },
 
   },
