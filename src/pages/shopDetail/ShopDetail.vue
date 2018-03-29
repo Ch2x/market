@@ -53,7 +53,7 @@
               <span>留言</span>
           </section>
           <section class="shopDetail_type" v-if="showButton">
-             <button @click="addCart" disabled="!addState">{{addState?'已加入购物车':'加入购物车'}}</button>
+             <button @click="addCart" :disabled="addState">{{addState?'已加入购物车':'加入购物车'}}</button>
              <button>去结算</button>
           </section>
       </footer>
@@ -111,14 +111,15 @@ export default {
       this.product_info = productDetail.product;
       this.product_user = productDetail.userInfo;
       this.comment = productDetail.comment;
-      if(this.product_info.user_id === this.userInfo.user_id) {
+      if(this.userInfo) {
+        if(this.product_info.user_id === this.userInfo.user_id) {
         this.showButton = false;
       } else {
         const result = await getAddState(this.userInfo.user_id, this.product_id);
         if(result.status === 1) {
           this.addState = true
-          console.log(1);
         }
+      }
       }
     },
     async addCart() {
@@ -130,6 +131,9 @@ export default {
         product_id: this.product_id,
         user_id: this.userInfo.user_id,
       });
+      if(result.status === 1) {
+        this.addState = true;
+      }
     },
     changeFocus(flag) {
       if(!this.userInfo) {

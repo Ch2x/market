@@ -9,6 +9,7 @@
         <section class="header_title" v-if="headTitle">
             <span class="header_text">{{headTitle}}</span>
         </section>
+        <slot name="add"></slot>
     </header>
 </template>
 

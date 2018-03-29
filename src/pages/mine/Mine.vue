@@ -36,6 +36,36 @@
                         </span>
                     </div>
                 </section>
+                 <section  class="myrelease" @click="changeView({path:'/myPosted'})">
+                    <aside>
+                        <svg fill="#4aa5f0">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                        </svg>
+                    </aside>
+                    <div class="myrelease-div">
+                        <span>我的买到</span>
+                        <span class="myrelease-divsvg">
+                            <svg fill="#bbb">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </section>
+                <section  class="myrelease" @click="changeView({path:'/address'})">
+                    <aside>
+                        <svg fill="#4aa5f0">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                        </svg>
+                    </aside>
+                    <div class="myrelease-div">
+                        <span>收获地址</span>
+                        <span class="myrelease-divsvg">
+                            <svg fill="#bbb">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </section>
             </section>
         </section>
         <Footer></Footer>

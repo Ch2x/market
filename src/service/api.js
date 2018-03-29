@@ -59,3 +59,7 @@ export const getMyMessage = (payload) => fetch('/comment/getMyMessage', {...payl
 export const addCart = (payload) => fetch('/cart/addCart', {...payload}, "POST"); 
 
 export const getAddState = (user_id, product_id) => fetch(`/cart/getAddState/${user_id}/${product_id}`, {}, "GET");
+
+export const getMyCart = (payload) => fetch('/cart/getMyCart', {...payload}, 'GET');
+
+export const delShopCart = (user_id, products) => fetch(`/cart/delShopCart/${user_id}/${products}`, {}, "DELETE");
