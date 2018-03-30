@@ -21,7 +21,9 @@
             </section>
             <section class="item-bottom">
                 <span>合计￥{{item.total}}</span>
-                <button>去结算</button>
+                <router-link :to="{path: '/buy', query: {product_id: item.products[0].product_id}}">
+                    <button>去结算</button>
+                </router-link>
             </section>
         </section>
         <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
@@ -167,7 +169,7 @@ export default {
     .item-bottom {
         padding: .4rem .6rem;
         text-align: right;
-        >button {
+        button {
             background-color: #4cd964;
             padding: .3rem .6rem;
             text-align: center;

@@ -18,6 +18,7 @@ import ReleaseSort from '@/pages/release/ReleaseSort'
 import ShopCart from '@/pages/shopCart/ShopCart'
 import Address from '@/pages/mine/MyAddress'
 import AddAddress from '@/pages/mine/AddAddress'
+import Buy from '@/pages/shopDetail/Buy'
 
 Vue.use(Router)
 
@@ -115,8 +116,12 @@ export default new Router({
           path: '/addAddress',
           name: AddAddress,
           component: AddAddress,
+        },
+        {
+          path: '/buy',
+          name: Buy,
+          component: Buy,
         }
-        
       ]
     }
 

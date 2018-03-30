@@ -4,39 +4,64 @@
         <form class="addForm">
             <section class="addInput_item">
                 <span>联系人</span>
-                <input type="text" placeholder="姓名">
+                <input type="text" placeholder="姓名" v-model="name">
             </section>
             <section class="addInput_item">
                 <span>电话</span>
-                <input type="text" placeholder="手机号码">
+                <input type="text" placeholder="手机号码" v-model="phone">
             </section>
             <section class="addInput_item">
                 <span>地址</span>
-                <input type="text" placeholder="收获地址">
+                <input type="text" placeholder="收获地址" v-model="address">
             </section>
             <section class="addInput_item">
                 <span>邮政编号</span>
-                <input type="text" placeholder="编号">
+                <input type="text" placeholder="编号" v-model="postCode">
             </section>
-            <section class="addCheck">
-                <input type="checkbox" placeholder="编号">
-                <span>设置为默认收货地址</span>
-            </section>
+            <!-- <section class="addCheck">
+                <input type="checkbox" placeholder="编号" id="checkDafault" value="设置为默认收货地址" v-model="check">
+                <label for="checkDafault">设置为默认收货地址</label>
+            </section> -->
         </form>
-        <div class="login_container">保存</div>
+        <div class="login_container" @click="saveAddress">保存</div>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
+import { postAddress } from '../../service/api';  
+import { mapState } from 'Vuex';
 
 export default {
     data() {
         return {
-
+            name: '',
+            phone: '',
+            address: '',
+            postCode: '',
+            check: false,
         }
+    },
+    computed: {
+        ...mapState([
+            'userInfo',
+        ])
     },
     components: {
         Header,
+    },
+    methods: {
+        async saveAddress() {
+            const result = await postAddress({
+                address: this.address, 
+                phone: this.phone, 
+                user_id: this.userInfo.user_id, 
+                name: this.name, 
+                postCode: this.postCode,
+            })
+            if(result.status === 1) {
+                this.$router.go(-1);
+            }
+        }
     }
 }
 </script>
@@ -65,7 +90,7 @@ export default {
     }
     .addCheck {
         padding: .3rem 0;
-        >span {
+        >label {
             @include sc(.8rem, #666);
         }
     }

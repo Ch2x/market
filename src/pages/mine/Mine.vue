@@ -58,7 +58,7 @@
                         </svg>
                     </aside>
                     <div class="myrelease-div">
-                        <span>收获地址</span>
+                        <span>收货地址</span>
                         <span class="myrelease-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>

@@ -1,20 +1,20 @@
 <template>
     <div class="address_page">
-        <Header go-back="true" head-title="收获地址">
+        <Header go-back="true" head-title="收货地址">
             <router-link to="/addAddress" slot="add">
                 <span class="addIcon">新增地址</span>
             </router-link>
         </Header>
         <ul>
-            <li class="address_item">
+            <li class="address_item" v-for="item in addressList" :key="item.address_id">
                 <section class="address_section">
                     <div>
-                    <span>收货人</span>
-                    <span>1242315435</span>
+                    <span>收货人:{{item.name}}</span>
+                    <span>{{item.phone}}</span>
                 </div>
-                    <p><span>收货地址：</span></p>
+                    <p><span>收货地址：{{item.address}}</span></p>
                 </section>
-                <aside class="address_aside">
+                <aside class="address_aside" @click="deleteAddress(item.address_id)">
                     <span>
                      <svg class="arrow-svg" fill="#bbb">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-delete"></use>
@@ -27,14 +27,39 @@
 </template>
 <script>
 import Header from "@/components/Header";
+import { getMyAddress, delAddress }  from '../../service/api';
+import { mapState } from 'Vuex';
+
 export default {
     data() {
         return {
-
+            addressList: [],
         }
+    },
+    computed: {
+        ...mapState([
+            'userInfo',
+        ])
     },
     components: {
         Header,
+    },
+    mounted() {
+        this.init();
+    },
+    methods: {
+        async init() {
+            const result = await getMyAddress({user_id: this.userInfo.user_id});
+            this.addressList = result;
+        },
+
+        async deleteAddress(id) {
+            const result = await delAddress(this.userInfo.user_id, id);
+            if(result.status === 1) {
+                console.log('成功');
+                this.init();
+            }
+        }   
     }
 }
 </script>
@@ -63,7 +88,7 @@ export default {
 .address_aside {
     >span {
             display: inline-block;
-            @include wh(1.3rem, 1.3rem);
+            @include wh(1.2rem, 1.2rem);
             >svg {
               @include wh(100%, 100%);  
             }

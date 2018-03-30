@@ -54,7 +54,9 @@
           </section>
           <section class="shopDetail_type" v-if="showButton">
              <button @click="addCart" :disabled="addState">{{addState?'已加入购物车':'加入购物车'}}</button>
-             <button>去结算</button>
+             <router-link :to="{path: '/buy', query: {product_id}}">
+               <button>去结算</button>
+             </router-link>
           </section>
       </footer>
   </div>
@@ -263,7 +265,7 @@ export default {
 }
 
 .shopDetail_type {
-  >button {
+  button {
     background-color: #4cd964;
             padding: .3rem .6rem;
             text-align: center;

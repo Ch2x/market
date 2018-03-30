@@ -63,3 +63,13 @@ export const getAddState = (user_id, product_id) => fetch(`/cart/getAddState/${u
 export const getMyCart = (payload) => fetch('/cart/getMyCart', {...payload}, 'GET');
 
 export const delShopCart = (user_id, products) => fetch(`/cart/delShopCart/${user_id}/${products}`, {}, "DELETE");
+
+export const postAddress = (payload) => fetch('/address/postAddress', {...payload}, 'POST');
+
+export const getMyAddress = (payload) => fetch('/address/getMyAddress', {...payload}, 'GET');
+
+export const delAddress = (user_id, address_id) => fetch(`/address/delAddress/${user_id}/${address_id}`, {}, "DELETE");
+
+export const getOrderInfo = (payload) => fetch('/product/getOrderInfo', {...payload}, 'GET');
+
+export const confirmOrder = (payload) => fetch('/product/confirmOrder', {...payload}, "POST");
