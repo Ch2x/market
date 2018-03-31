@@ -9,13 +9,23 @@
                 <h5>{{product.title}}</h5>
             </section>
         </div>
-        <div class="buy_detail">
-            <p>收货地址</p>
-            <div>
-                <h5>{{address.name + address.phone}}</h5>
-                <p>{{address.address}}</p>
+        <router-link to="/chooseAddress">
+            <div class="buy_detail">
+                <div v-if="address">
+                    <p>收货地址</p>
+                    <div class="buy_address">
+                        <p>{{address.name + address.phone}}</p>
+                        <p>{{address.address}}</p>
+                    </div>
+                </div>
+                <div v-else>请添加一个收货地址</div>
+                <span class="address_arrow">
+                    <svg fill="#bbb">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                    </svg>
+                </span>
             </div>
-        </div>
+        </router-link>
         <footer class="buy_footer">
             <div>
                 <span>付款：￥{{product.price}}</span>
@@ -24,18 +34,18 @@
                 <button @click="buyProduct">确定</button>
             </section>
         </footer>
+        <router-view></router-view>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
 import { getOrderInfo, confirmOrder } from '../../service/api';
-import { mapState } from 'Vuex';
+import { mapState, mapMutations } from 'Vuex';
 
 export default {
     data() {
         return {
             product_id: '',
-            address: '',
             product: '',
             image: '',
         }
@@ -43,6 +53,7 @@ export default {
     computed: {
         ...mapState([
             'userInfo',
+            'address',
         ])
     },
     components: {
@@ -55,12 +66,17 @@ export default {
         this.init();
     },
     methods: {
+        ...mapMutations([
+            'chooseAddress'
+        ]),
         async init() {
             const result = await getOrderInfo({user_id: this.userInfo.user_id, product_id: this.product_id})
             console.log(result);
-            this.address = result.address;
             this.product = result.product;
             this.image = result.product.images[0];
+            if(result.address) {
+                this.chooseAddress({address: result.address});
+            }
         },
         async buyProduct() {
             const result = await confirmOrder({
@@ -102,6 +118,15 @@ export default {
     justify-content: space-between;
     text-align: right;
     background-color: #fff;
+    .buy_address {
+        font-size: .8rem;
+    }
+    .address_arrow {
+        @include wh(.8rem, .8rem);
+        >svg {
+            @include wh(100%, 100%);
+        }
+    }
 }
 .buy_footer {
     background-color: #fff;

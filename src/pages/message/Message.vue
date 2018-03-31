@@ -7,7 +7,7 @@
                     <li  v-for="(item, index) in list" :key="index">
                         <section v-if="item.isDelete" class="message_item">
                             <section class="message_left">
-                                <img :src='"http://192.168.1.167:3000/img/"+item.avatar'>
+                                <img :src='"http://localhost:3000/img/"+item.avatar'>
                             </section>
                             <section class="message_middle">
                                 <h5>{{item.userName}}</h5>
@@ -20,7 +20,7 @@
                         </section>
                         <router-link v-else class="message_item" :to="{path: '/shopDetail', query: {product_id: item.product_id}}" >
                             <section class="message_left">
-                                <img :src='"http://192.168.1.167:3000/img/"+item.avatar'>
+                                <img :src='"http://localhost:3000/img/"+item.avatar'>
                             </section>
                             <section class="message_middle">
                                 <h5>{{item.userName}}</h5>

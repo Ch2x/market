@@ -29,7 +29,7 @@
 <script>
 import Header from "@/components/Header";
 import { postAddress } from '../../service/api';  
-import { mapState } from 'Vuex';
+import { mapState, mapMutations } from 'Vuex';
 
 export default {
     data() {
@@ -50,6 +50,10 @@ export default {
         Header,
     },
     methods: {
+        ...mapMutations([
+            'confirmAddress'
+        ]),
+
         async saveAddress() {
             const result = await postAddress({
                 address: this.address, 
@@ -59,6 +63,7 @@ export default {
                 postCode: this.postCode,
             })
             if(result.status === 1) {
+                this.confirmAddress({newAddress: true});
                 this.$router.go(-1);
             }
         }
@@ -69,7 +74,17 @@ export default {
 @import '../../assets/style/mixin';
 
 .add_page {
-    padding-top: 2.5rem;
+    position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #f2f2f2;
+        z-index: 205;
+        padding-top: 1.95rem;
+        p, span{
+            font-family: Helvetica Neue,Tahoma,Arial;
+        }
 }
 
 .addForm {

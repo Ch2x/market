@@ -1,12 +1,12 @@
 <template>
     <div class="address_page">
-        <Header go-back="true" head-title="收货地址">
-            <router-link to="/addAddress" slot="add">
+        <Header go-back="true" head-title="选择地址">
+            <router-link to="/add" slot="add">
                 <span class="addIcon">新增地址</span>
             </router-link>
         </Header>
         <ul>
-            <li class="address_item" v-for="item in addressList" :key="item.address_id">
+            <li class="address_item" v-for="(item, index) in addressList" :key="index" @click="chooseClick(index)">
                 <section class="address_section">
                     <div class="address_top">
                         <span>收货人:{{item.name}}</span>
@@ -14,21 +14,15 @@
                     </div>
                     <p><span>收货地址：{{item.address}}</span></p>
                 </section>
-                <aside class="address_aside" @click="deleteAddress(item.address_id)">
-                    <span>
-                     <svg class="arrow-svg" fill="#bbb">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-delete"></use>
-                    </svg>
-                </span>
-                </aside>
             </li>
         </ul>
+        <router-view></router-view>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
 import { getMyAddress, delAddress }  from '../../service/api';
-import { mapState } from 'Vuex';
+import { mapState, mapMutations } from 'Vuex';
 
 export default {
     data() {
@@ -38,7 +32,7 @@ export default {
     },
     computed: {
         ...mapState([
-            'userInfo',
+            'userInfo','newAddress',
         ])
     },
     components: {
@@ -48,6 +42,9 @@ export default {
         this.init();
     },
     methods: {
+        ...mapMutations([
+            'chooseAddress',
+        ]),
         async init() {
             const result = await getMyAddress({user_id: this.userInfo.user_id});
             this.addressList = result;
@@ -59,14 +56,34 @@ export default {
                 console.log('成功');
                 this.init();
             }
-        }   
+        },
+        
+        async chooseClick(index) {
+            this.chooseAddress({address: this.addressList[index]});
+            this.$router.go(-1);
+        }
+    },
+    watch: {
+        newAddress: function(value) {
+            this.init();
+        }
     }
 }
 </script>
 <style lang="scss" scoped>
 @import "../../assets/style/mixin";
 .address_page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f2f2f2;
+    z-index: 199;
     padding-top: 1.95rem;
+    p, span{
+        font-family: Helvetica Neue,Tahoma,Arial;
+    }
 }
 .addIcon {
     @include sc(.8rem, #fff);
@@ -92,15 +109,6 @@ export default {
             }
         }
     }
-}
-.address_aside {
-    >span {
-            display: inline-block;
-            @include wh(1.2rem, 1.2rem);
-            >svg {
-              @include wh(100%, 100%);  
-            }
-        }
 }
 </style>
 

@@ -4,7 +4,7 @@
         <section>
             <section class="mine_top">
                 <router-link :to="userInfo&&userInfo.user_id?'/userInfo':'/login'" class="mine_link">
-                    <img  v-if="userInfo" :src="'http://192.168.1.167:3000/img/' + avatar" class="mine_avatar">
+                    <img  v-if="userInfo" :src="'http://localhost:3000/img/' + avatar" class="mine_avatar">
                     <span class="mine_avatar" v-else>
                         <svg class="mine_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -36,7 +36,7 @@
                         </span>
                     </div>
                 </section>
-                 <section  class="myrelease" @click="changeView({path:'/myPosted'})">
+                 <section  class="myrelease" @click="changeView({path:'/myBuy'})">
                     <aside>
                         <svg fill="#4aa5f0">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
@@ -44,6 +44,21 @@
                     </aside>
                     <div class="myrelease-div">
                         <span>我的买到</span>
+                        <span class="myrelease-divsvg">
+                            <svg fill="#bbb">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </section>
+                <section  class="myrelease" @click="changeView({path:'/mySold'})">
+                    <aside>
+                        <svg fill="#4aa5f0">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                        </svg>
+                    </aside>
+                    <div class="myrelease-div">
+                        <span>我的卖出</span>
                         <span class="myrelease-divsvg">
                             <svg fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>

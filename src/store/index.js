@@ -11,6 +11,8 @@ const state = {
     login: false, //是否登录
     addSort: null, //添加分类
     avatar: null,
+    address: null,
+    newAddress: false,
 }
 
 export default new Vuex.Store({

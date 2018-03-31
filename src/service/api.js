@@ -73,3 +73,7 @@ export const delAddress = (user_id, address_id) => fetch(`/address/delAddress/${
 export const getOrderInfo = (payload) => fetch('/product/getOrderInfo', {...payload}, 'GET');
 
 export const confirmOrder = (payload) => fetch('/product/confirmOrder', {...payload}, "POST");
+
+export const getMyBuy = (payload) => fetch('/product/getMyBuy', {...payload}, 'GET');
+
+export const getMySold = (payload) => fetch('/product/getMySold', {...payload}, 'GET');

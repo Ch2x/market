@@ -20,5 +20,13 @@ export default {
     changeAvatar(state, payload) {
         console.log(payload);
         state.avatar = payload.avatar;
+    },
+
+    chooseAddress(state, payload) {
+        state.address = payload.address;
+    },
+
+    confirmAddress(state, payload) {
+        state.newAddress = payload.newAddress;
     }
 }

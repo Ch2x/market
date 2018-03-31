@@ -3,7 +3,7 @@
       <Header go-back="true"></Header>
       <section class="shopDetail">
             <section class="shopDetail_top">
-                    <img :src="'http://192.168.1.167:3000/img/' + product_user.avatar" class="shopDetail_avatar" v-if="product_user.avatar">
+                    <img :src="'http://localhost:3000/img/' + product_user.avatar" class="shopDetail_avatar" v-if="product_user.avatar">
                     <span class="shopDetail_avatar" v-else>
                         <svg class="shopDetail_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -54,7 +54,7 @@
           </section>
           <section class="shopDetail_type" v-if="showButton">
              <button @click="addCart" :disabled="addState">{{addState?'已加入购物车':'加入购物车'}}</button>
-             <router-link :to="{path: '/buy', query: {product_id}}">
+             <router-link :to="userInfo?{path: '/buy', query: {product_id}}:{path: '/login'}">
                <button>去结算</button>
              </router-link>
           </section>

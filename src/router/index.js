@@ -19,6 +19,10 @@ import ShopCart from '@/pages/shopCart/ShopCart'
 import Address from '@/pages/mine/MyAddress'
 import AddAddress from '@/pages/mine/AddAddress'
 import Buy from '@/pages/shopDetail/Buy'
+import MyBuy from  '@/pages/mine/MyBuy'
+import MySold from  '@/pages/mine/MySold'
+import ChooseAddress from '@/pages/shopDetail/ChooseAddress'
+import Add from '@/pages/shopDetail/Add'
 
 Vue.use(Router)
 
@@ -121,7 +125,29 @@ export default new Router({
           path: '/buy',
           name: Buy,
           component: Buy,
-        }
+          children: [
+            {
+              path: '/chooseAddress',
+              component: ChooseAddress,
+              children: [
+                {
+                  path: '/add',
+                  component: Add,
+                }
+              ]
+            },
+          ]
+        },
+        {
+          path: '/myBuy',
+          name: MyBuy,
+          component: MyBuy,
+        },
+        {
+          path: '/mySold',
+          name: MySold,
+          component: MySold,
+        },
       ]
     }
 
