@@ -23,11 +23,11 @@ export const releaseProduct = (user_id, images, sort, description, title, price)
     price,
 }, 'POST');
 
-export const getProductLists = (sort) => {
+export const getProductLists = (sort, page, pageSize, sorting) => {
     if(sort) {
-        return fetch('/product/getAllProducts', { sort }, 'GET');
+        return fetch('/product/getAllProducts', { sort, page, pageSize, sorting }, 'GET');
     } else {
-        return  fetch('/product/getAllProducts', {}, 'GET');
+        return  fetch('/product/getAllProducts', { page, pageSize, sorting }, 'GET');
     }
 }
 
@@ -77,3 +77,11 @@ export const confirmOrder = (payload) => fetch('/product/confirmOrder', {...payl
 export const getMyBuy = (payload) => fetch('/product/getMyBuy', {...payload}, 'GET');
 
 export const getMySold = (payload) => fetch('/product/getMySold', {...payload}, 'GET');
+
+export const getBuyOrderDetail = (payload) => fetch('/product/getBuyOrderDetail', {...payload}, 'GET');
+
+export const getcaptchas = () => fetch('/user/getcaptchas', {}, 'POST');
+
+export const changePassword = (payload) => fetch('/user/changePassword', {...payload}, 'GET')
+
+export const setPassword = (payload) => fetch('/user/setPassword', {...payload}, 'POST');

@@ -164,7 +164,21 @@ export default {
         this.showAlert = true;
         this.alterText = '图片不能空';
         return;
+      } else if(!this.addSort) {
+        this.showAlert = true;
+        this.alterText = '分类不能空';
+        return;
+      }else if(!this.price) {
+        this.showAlert = true;
+        this.alterText = '价格不能空';
+        return;
       } 
+      const reg = new RegExp(/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, 'g');
+      if(!reg.test(this.price)) {
+        this.showAlert = true;
+        this.alterText = '请输入有效的数字';
+        return;
+      }
       if(this.$route.query.product_id) {
         const result = await updateProduct(this.product_id, this.images, this.addSort, this.description, this.title, this.price);
       }else {

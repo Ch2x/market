@@ -11,21 +11,24 @@
                 </span>
             </div>
             <section class="item-middle" v-for="value in item.products" :key="value.product_id">
-                <div class="shop-item">
-                    <section class="shop_img">
-                        <img :src="value.images">
-                    </section>
-                    <h5>{{value.title}}</h5>
-                    <span>￥{{value.price}}</span>
-                </div>
+                <router-link :to="{path: '/shopDetail', query: {product_id: value.product_id}}">
+                    <div class="shop-item">
+                        <section class="shop_img">
+                            <img :src="value.images">
+                        </section>
+                        <h5>{{value.title}}</h5>
+                        <span>￥{{value.price}}</span>
+                    </div>
+                </router-link>
             </section>
             <section class="item-bottom">
-                <span>合计￥{{item.total}}</span>
+                合计<span>￥{{item.total}}</span>
                 <router-link :to="{path: '/buy', query: {product_id: item.products[0].product_id}}">
-                    <button>去结算</button>
+                    <button :disabled="item.isBuy">{{item.isBuy?'失效':'去结算'}}</button>
                 </router-link>
             </section>
         </section>
+        <div class="emptyTip" v-if="cartList.length === 0">这里是空的</div>
         <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
     </div>
 </template>
@@ -40,7 +43,7 @@ export default {
         return {
             cartList: [],
             showAlert: false,
-            alterText: ''
+            alterText: '',
         }
     },
     computed: {
@@ -66,6 +69,7 @@ export default {
                         owner: result[i].owner,
                         owner_id: result[i].owner_id,
                         total: total,
+                        isBuy: result[i].isBuy,
                         products: [
                             {
                                 price: result[i].price,
@@ -148,7 +152,7 @@ export default {
             margin: 0 .6rem;
             border-bottom: 0.025rem solid #f1f1f1;
             .shop_img {
-                @include wh(1.8rem, 1.8rem);
+                @include wh(3.2rem, 3.2rem);
                 >img {
                     @include wh(100%, 100%);
                 }
@@ -161,6 +165,9 @@ export default {
                 @include font(0.65rem, 0.65rem, "PingFangSC-Regular");
                 font-weight: 700;
             }
+            >span {
+                color: rgb(230, 63, 63);
+            }
             &:last-child {
                 border-bottom: 0;
             }
@@ -169,6 +176,9 @@ export default {
     .item-bottom {
         padding: .4rem .6rem;
         text-align: right;
+        >span {
+            color: rgb(230, 63, 63);
+        }
         button {
             background-color: #4cd964;
             padding: .3rem .6rem;
@@ -176,8 +186,16 @@ export default {
             @include sc(.6rem, #fff);
             border-radius: 0.1rem;
             border: 1px;
+            &:disabled {
+                background-color: #333;
+            }
         }
     }
+    
 }
+.emptyTip {
+        padding-top: 1.2rem;
+        text-align: center;
+    }
 </style>
 

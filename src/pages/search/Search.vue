@@ -12,7 +12,7 @@
                         <div class="search_item_img">
                             <img :src="item.images[0]">
                         </div>
-                        <h5>{{item.title}}</h5>
+                        <h5 class="search_title">{{item.title}}</h5>
                         <div>
                             <span>￥{{item.price}}</span>
                         </div>
@@ -20,6 +20,7 @@
                 </router-link>
           </ul>
       </section>
+      <div class="tipFind" v-if="showResult">未找到相关产品或者内容</div>
   </div>
 </template>
 
@@ -27,11 +28,13 @@
 import Header from "@/components/Header";
 import { searchProduct } from "@/service/api";
 
+
 export default {
   data() {
     return {
       searchValue: "",
-      searchList: []
+      searchList: [],
+      showResult: false,
     };
   },
   components: {
@@ -39,8 +42,17 @@ export default {
   },
   methods: {
     async submit() {
+      this.searchList = [];
+      if(!this.searchValue) {
+        return;
+      }
       const result = await searchProduct({ searchValue: this.searchValue });
-      this.searchList = result;
+      if(result.length === 0 ) {
+        this.showResult = true;
+      } else {
+        this.showResult = false;
+        this.searchList = result;
+      }
     }
   }
 };
@@ -90,10 +102,19 @@ export default {
         @include wh(100%, 100%);
       }
     }
+    .search_title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     span {
          @include sc(.9rem, rgb(230, 63, 63));
     }
   }
+}
+.tipFind {
+  padding-top: 1.8rem;
+  text-align: center;
 }
 </style>
 

@@ -35,6 +35,7 @@
                
             </ul>
         </div>
+        <div class="noMessage" v-if="list.length===0">暂无留言</div>
         <Footer></Footer>
     </div>
 </template>
@@ -100,5 +101,9 @@ export default {
             @include wh(100%, 100%);
         }
     }
+}
+.noMessage {
+    padding-top: 1.2rem;
+    text-align: center;
 }
 </style>

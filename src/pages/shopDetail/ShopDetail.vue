@@ -53,10 +53,13 @@
               <span>留言</span>
           </section>
           <section class="shopDetail_type" v-if="showButton">
-             <button @click="addCart" :disabled="addState">{{addState?'已加入购物车':'加入购物车'}}</button>
-             <router-link :to="userInfo?{path: '/buy', query: {product_id}}:{path: '/login'}">
-               <button>去结算</button>
-             </router-link>
+             <button v-if="userInfo&&product_info.isBuy" class="sold">卖掉了</button>
+             <span v-else>
+                <button @click="addCart" :disabled="addState">{{addState?'已加入购物车':'加入购物车'}}</button>
+                <router-link :to="userInfo?{path: '/buy', query: {product_id}}:{path: '/login'}">
+                  <button>去结算</button>
+                </router-link>
+             </span>
           </section>
       </footer>
   </div>
@@ -267,11 +270,17 @@ export default {
 .shopDetail_type {
   button {
     background-color: #4cd964;
-            padding: .3rem .6rem;
-            text-align: center;
-            @include sc(.6rem, #fff);
-            border-radius: 0.1rem;
-            border: 1px;
+    padding: .3rem .6rem;
+    text-align: center;
+    @include sc(.6rem, #fff);
+    border-radius: 0.1rem;
+    border: 1px;
+    &:disabled {
+      background-color: grey;
+    }
+  }
+  .sold {
+      background-color: grey;
   }
 }
 

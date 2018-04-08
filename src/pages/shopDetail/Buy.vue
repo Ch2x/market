@@ -11,7 +11,7 @@
         </div>
         <router-link to="/chooseAddress">
             <div class="buy_detail">
-                <div v-if="address">
+                <div v-if="address" class="buy_info">
                     <p>收货地址</p>
                     <div class="buy_address">
                         <p>{{address.name + address.phone}}</p>
@@ -27,18 +27,20 @@
             </div>
         </router-link>
         <footer class="buy_footer">
-            <div>
-                <span>付款：￥{{product.price}}</span>
+            <div class="buy_price">
+                付款：<span>￥{{product.price}}</span>
             </div>
             <section class="buy_confirm">
                 <button @click="buyProduct">确定</button>
             </section>
         </footer>
         <router-view></router-view>
+        <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
+import AlterTip from '@/components/AlterTip'
 import { getOrderInfo, confirmOrder } from '../../service/api';
 import { mapState, mapMutations } from 'Vuex';
 
@@ -48,6 +50,8 @@ export default {
             product_id: '',
             product: '',
             image: '',
+            showAlert: false,
+            alertText: '',
         }
     },
     computed: {
@@ -58,6 +62,7 @@ export default {
     },
     components: {
         Header,
+        AlterTip,
     },
     created() {
         this.product_id = this.$route.query.product_id
@@ -67,7 +72,9 @@ export default {
     },
     methods: {
         ...mapMutations([
-            'chooseAddress'
+            'chooseAddress',
+            'saveOrderInfo',
+            'confirmAddress',
         ]),
         async init() {
             const result = await getOrderInfo({user_id: this.userInfo.user_id, product_id: this.product_id})
@@ -79,15 +86,33 @@ export default {
             }
         },
         async buyProduct() {
+            if(!this.address) {
+                this.alterText = '请输入地址';
+                this.showAlert = true;
+                return;
+            }
             const result = await confirmOrder({
                 user_id: this.userInfo.user_id,
                 address_id: this.address.address_id,
                 product_id: this.product.product_id,
             })
             if(result.status) {
-                console.log(1);
+                this.saveOrderInfo({
+                    price: this.product.price,
+                    image: this.image,
+                    title: this.product.title,
+                    buyTime: result.message.buyTime,
+                    buy_id: result.message.buy_id,
+                    userName: result.message.userName,
+                });
+                this.chooseAddress({address: null});
+                this.confirmAddress({newAddress: false});
+                this.$router.push('/orderSuccess');
             }
-        }
+        },
+        closeTip() {
+            this.showAlert = false;
+        },
     }
 }
 </script>
@@ -101,25 +126,33 @@ export default {
     display: flex;
     background-color: #fff;
     .buy_product_img {
+        flex: 1;
         @include wh(6.5rem, 6.5rem);
         >img {
             @include wh(100%, 100%);
         }
     }
     .buy_product_detail {
-
+        padding: .6rem .8rem;
+        flex: 2;
     }
 }
 .buy_detail {
     margin-top: .8rem;
     padding: .8rem .6rem;
+    text-align: right;
+    background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    text-align: right;
-    background-color: #fff;
     .buy_address {
         font-size: .8rem;
+    }
+    .buy_info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: auto;
     }
     .address_arrow {
         @include wh(.8rem, .8rem);
@@ -141,6 +174,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding-left: .6rem;
+}
+.buy_price {
+    >span {
+        color: rgb(230, 63, 63);
+    }
 }
 .buy_confirm {
     height: 100%;

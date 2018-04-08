@@ -36,7 +36,7 @@ export default {
         bottom: 0;
         z-index: 200;
         .Alter-content {
-            height: 1.8rem;
+            // height: 100%;
             background-color: rgba(29, 29, 29, 0.623);
             position: absolute;
             padding: 0 .8rem;

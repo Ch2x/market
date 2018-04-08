@@ -16,7 +16,8 @@
                   </section>
                   </router-link>
                   <section class="myPosted-item-bottom">
-                      <a class="myPosted-edit" >删除</a>
+                      <!-- <a class="myPosted-edit" >删除</a> -->
+                      <router-link class="myPosted-edit" :to="{path: '/orderDetail', query: {product_id: item.product_id}}">详情</router-link>
                   </section>
               </li>
           </ul>
@@ -51,13 +52,6 @@ export default {
             const result = await getMySold({user_id: this.userInfo.user_id});
             this.soldList = result;
         },
-        async delProduct(product_id, index) {
-            console.log(product_id);
-            const result = await delProduct(this.userInfo.user_id, product_id);
-            if(result.status === 1) {
-                this.postedList.splice(index, 1);
-            }
-        }
     }
 }
 </script>

@@ -13,6 +13,7 @@ const state = {
     avatar: null,
     address: null,
     newAddress: false,
+    orderInfo: null,
 }
 
 export default new Vuex.Store({

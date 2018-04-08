@@ -32,6 +32,18 @@
                     </div>
                 </section>
             <!-- </router-link> -->
+            <router-link to="/setPassword" class="userInfo_name">
+                <section class="userInfo_section userInfo_section2">
+                    <h2>修改密码</h2>
+                    <div class="userInfo_div">
+                        <span class="userInfo_div_bottom">
+                            <svg fill="#d8d8d8">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                            </svg>
+                        </span>
+                    </div>
+                </section>
+            </router-link>
             <section class="exitLogin" @click="exitLogin">退出登录</section>
         </section>
     </div>

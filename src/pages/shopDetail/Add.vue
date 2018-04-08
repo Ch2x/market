@@ -24,10 +24,12 @@
             </section> -->
         </form>
         <div class="login_container" @click="saveAddress">保存</div>
+        <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
+import AlterTip from '@/components/AlterTip'
 import { postAddress } from '../../service/api';  
 import { mapState, mapMutations } from 'Vuex';
 
@@ -39,6 +41,8 @@ export default {
             address: '',
             postCode: '',
             check: false,
+            showAlert: false,
+            alertText: '',
         }
     },
     computed: {
@@ -48,6 +52,7 @@ export default {
     },
     components: {
         Header,
+        AlterTip,
     },
     methods: {
         ...mapMutations([
@@ -55,6 +60,35 @@ export default {
         ]),
 
         async saveAddress() {
+            if(!this.name) {
+                this.showAlert = true;
+                this.alterText = '联系人不能为空';
+                return;
+            } else if(!this.phone) {
+                this.showAlert = true;
+                this.alterText = '手机号码不能为空';
+                return;
+            } else if(!this.address) {
+                this.showAlert = true;
+                this.alterText = '地址不能为空';
+                return;
+            } else if(!this.postCode) {
+                this.showAlert = true;
+                this.alterText = '邮政编码不能为空';
+                return;
+            }
+            const reg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, 'g');
+            if(!reg.test(this.phone)) {
+                this.alterText = '请输入正确的11位手机号码';
+                this.showAlert = true;
+                return;
+            }
+            const reg1 = new RegExp(/^[1-9][0-9]{5}$/, 'g');
+            if(!reg1.test(this.postCode)) {
+                this.alterText = '请输入正确的6位邮政编码';
+                this.showAlert = true;
+                return;
+            }
             const result = await postAddress({
                 address: this.address, 
                 phone: this.phone, 
@@ -66,7 +100,10 @@ export default {
                 this.confirmAddress({newAddress: true});
                 this.$router.go(-1);
             }
-        }
+        },
+        closeTip() {
+            this.showAlert = false;
+        },
     }
 }
 </script>

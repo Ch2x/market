@@ -23,6 +23,10 @@ import MyBuy from  '@/pages/mine/MyBuy'
 import MySold from  '@/pages/mine/MySold'
 import ChooseAddress from '@/pages/shopDetail/ChooseAddress'
 import Add from '@/pages/shopDetail/Add'
+import OrderSuccess from '@/pages/shopDetail/OrderSuccess'
+import OrderDetail from '@/pages/mine/OrderDetail'
+import SetPassword from '@/pages/mine/SetPassword'
+
 
 Vue.use(Router)
 
@@ -147,6 +151,21 @@ export default new Router({
           path: '/mySold',
           name: MySold,
           component: MySold,
+        },
+        {
+          path: '/orderSuccess',
+          name: OrderSuccess,
+          component: OrderSuccess,
+        },
+        {
+          path: '/orderDetail',
+          name: OrderDetail,
+          component: OrderDetail,
+        },
+        {
+          path: '/setPassword',
+          name: SetPassword,
+          component: SetPassword,
         },
       ]
     }

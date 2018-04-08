@@ -28,5 +28,9 @@ export default {
 
     confirmAddress(state, payload) {
         state.newAddress = payload.newAddress;
+    },
+
+    saveOrderInfo(state, payload) {
+        state.orderInfo = payload;
     }
 }

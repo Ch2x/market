@@ -1,6 +1,6 @@
 <template>
     <div class="home_page paddingTop">
-        <Header head-title="首页"></Header>
+        <Header head-title="二手买卖市场"></Header>
         <div>
             <router-link :to="'/search'" class="link_search">
                 <input type="search" name="search" placeholder="请输入" class="input_search">
@@ -116,4 +116,5 @@ export default {
     @include wh(60%, 60%);
   }
 }
+
 </style>

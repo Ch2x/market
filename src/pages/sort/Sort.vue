@@ -23,7 +23,7 @@ export default {
         return {
             sortLists: [
                 '手机数码','图书教材','家用电器','运动户外','美妆','衣服','游戏'
-            ]  
+            ]
         }
     },
     components: {
@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
     .sort_page {
-        padding-top: 1.9rem;
+        padding-top: 1.95rem;
     }
     .sortLists {
         li {

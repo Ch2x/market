@@ -24,7 +24,7 @@
                 <section  class="myrelease" @click="changeView({path:'/myPosted'})">
                     <aside>
                         <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-release"></use>
                         </svg>
                     </aside>
                     <div class="myrelease-div">
@@ -39,7 +39,7 @@
                  <section  class="myrelease" @click="changeView({path:'/myBuy'})">
                     <aside>
                         <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-buy"></use>
                         </svg>
                     </aside>
                     <div class="myrelease-div">
@@ -54,7 +54,7 @@
                 <section  class="myrelease" @click="changeView({path:'/mySold'})">
                     <aside>
                         <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-sold"></use>
                         </svg>
                     </aside>
                     <div class="myrelease-div">
@@ -69,7 +69,7 @@
                 <section  class="myrelease" @click="changeView({path:'/address'})">
                     <aside>
                         <svg fill="#4aa5f0">
-                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#order"></use>
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-address"></use>
                         </svg>
                     </aside>
                     <div class="myrelease-div">

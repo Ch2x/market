@@ -16,7 +16,8 @@
                   </section>
                   </router-link>
                   <section class="myPosted-item-bottom">
-                      <a class="myPosted-edit" >删除</a>
+                      <!-- <a class="myPosted-edit" >删除</a> -->
+                      <router-link class="myPosted-edit" :to="{path: '/orderDetail', query: {product_id: item.product_id}}">详情</router-link>
                   </section>
               </li>
           </ul>

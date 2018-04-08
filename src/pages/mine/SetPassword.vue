@@ -1,52 +1,58 @@
 <template>
     <div class="enroll_page">
-        <Header go-back='true' head-title="注册"></Header>
+        <Header go-back='true' head-title="修改密码"></Header>
         <form class="enrollForm">
             <section class="input_container">
-                <input type="text" placeholder="账号" v-model.lazy="userAccount">
+                <input type="password" placeholder="旧密码" v-model="oldPassword">
             </section>
             <section class="input_container">
-                <input type="password" placeholder="密码" v-model="password">
+                <input type="password" placeholder="新密码" v-model="password">
             </section>
             <section class="input_container">
                 <input type="password" placeholder="确认密码" v-model="confirmPassword">
             </section>
         </form>
-        <div class="enroll_container" @click="enroll">注册</div>
+        <div class="enroll_container" @click="onEdit">修改密码</div>
         <alter-tip v-if="showAlert" :alterText="alterText" @closeTip="closeTip"></alter-tip>
     </div>
 </template>
 <script>
 import Header from "@/components/Header";
-import AlterTip from '@/components/AlterTip'
-import { userEnroll } from '@/service/api';
+import AlterTip from '@/components/AlterTip';
+import { setPassword } from '@/service/api';
+import { mapState } from 'Vuex';
 
 export default {
     data() {
         return {
-            userAccount: '',
+            oldPassword: '',
             password: '',
             confirmPassword: '',
             showAlert: false,
             alterText: '',
         }
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     components: {
         Header,
         AlterTip,
     },
     methods: {
-        async enroll() {
-            if(!this.userAccount) {
+        async onEdit() {
+            if(!this.oldPassword) {
+                this.alterText = '旧密码不能为空';
                 this.showAlert = true;
-                this.alterText = '用户名不能为空';
                 return;
             }else if(!this.password) {
-                this.alterText = '密码不能为空';
+                this.alterText = '新密码不能为空';
                 this.showAlert = true;
                 return;
             }else if(!this.confirmPassword) {
-                this.alterText = '密码不能为空';
+                this.alterText = '确认密码不能为空';
                 this.showAlert = true;
                 return;
             }else if(this.confirmPassword!==this.password) {
@@ -54,16 +60,16 @@ export default {
                 this.showAlert = true;
                 return;
             }else {
-                const result = await userEnroll(this.userAccount, this.password, this.confirmPassword);
+                const result = await setPassword({oldPassword: this.oldPassword, password: this.password, confirmPassword: this.confirmPassword, user_id: this.userInfo.user_id});
                 if(result.status === 1) {
                     var self = this;
                     setTimeout(function() {
-                        this.alterText = result.message;
-                        this.showAlert = true;
                         self.$router.go(-1);
                         return;
                     }, 1000);
-                }else if(result.error === 'ERROR_USERNAME') {
+                    this.alterText = result.message;
+                    this.showAlert = true;
+                }else {
                     this.alterText = result.message;
                     this.showAlert = true;
                     return;
@@ -100,7 +106,7 @@ export default {
     .enroll_container {
         margin: 0.5rem 1rem;
         @include sc(.7rem, #fff);
-        background-color: #FF3D03;
+        background-color: #4cd964;
         padding: .5rem 0;
         border: 1px;
         border-radius: 0.15rem;
