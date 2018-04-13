@@ -45,14 +45,11 @@ export default {
       },
       swiperSlides: [
         {
-          image_path: "1.jpg"
+          image_path: "bg.png"
         },
         {
-          image_path: "1.jpg"
+          image_path: "bg2.png"
         },
-        {
-          image_path: "1.jpg"
-        }
       ],
       productLists: []
     };
@@ -100,6 +97,9 @@ export default {
 }
 .home_swiper {
   @include wh(100%, 8rem);
+  img {
+    @include wh(100%, 100%);
+  }
 }
 .home_cart {
   background-color: #FFF;
