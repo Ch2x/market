@@ -17,35 +17,11 @@
 								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
 							</svg>
                         </li>
-                        <!-- <li class="choose_item" data='0'>
-                            <span :class="{choose_color: dataType == 0}">综合排序</span>
-                            <svg v-if="dataType==0">
-								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-							</svg>
-                        </li>
-                        <li class="choose_item" data='1'>
-                            <span :class="{choose_color: dataType == 1}">价格从低到高</span>
-                            <svg v-if="dataType==1">
-								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-							</svg>
-                        </li>
-                        <li class="choose_item" data='2'>
-                            <span :class="{choose_color: dataType == 2}">价格从低到高</span>
-                            <svg v-if="dataType==2">
-								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-							</svg>
-                        </li>
-                        <li class="choose_item" data='3'>
-                            <span :class="{choose_color: dataType == 3}">最新发布</span>
-                            <svg v-if="dataType==3">
-								<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-							</svg>
-                        </li> -->
                     </ul>
                 </section>
             </div>
         </div>
-        <ShopList :sort='sortName' :sortType='sortType'></ShopList>
+        <ShopList :sort='sort_id' :sortType='sortType'></ShopList>
     </div>
 </template>
 
@@ -55,6 +31,7 @@ import ShopList from '@/components/ShopList';
 export default {
   data() {
       return {
+          sort_id: 0,
           sortName: "",
           sortFilter: false,
           dataType: '0',
@@ -67,7 +44,9 @@ export default {
       ShopList,
   },
   created() {
-      this.sortName = this.$route.query.name;
+      this.sort_id = this.$route.query.sort_id;
+      this.sortName = this.$route.query.sortName;
+      console.log(this.$route.query.sort_id);
   },
   methods: {
       showFilter() {

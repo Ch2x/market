@@ -4,7 +4,7 @@
         <section>
             <section class="mine_top">
                 <router-link :to="userInfo&&userInfo.user_id?'/userInfo':'/login'" class="mine_link">
-                    <img  v-if="userInfo" :src="'http://localhost:3000/img/' + avatar" class="mine_avatar">
+                    <img  v-if="userInfo" :src="imgUrl + avatar" class="mine_avatar">
                     <span class="mine_avatar" v-else>
                         <svg class="mine_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -92,11 +92,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { mapState } from 'vuex';
 import { } from '@/service/api';
+import { imgUrl } from '../../config/env';
 
 export default {
     data() {
         return {
-
+            imgUrl,
         }
     },
     computed: {

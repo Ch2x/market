@@ -16,8 +16,11 @@
                   </section>
                   </router-link>
                   <section class="myPosted-item-bottom">
-                      <router-link :to="{path: '/release', query: {product_id: item.product_id}}" class="myPosted-edit">编辑</router-link>
-                      <a class="myPosted-edit" @click="delProduct(item.product_id, index)">删除</a>
+                      <span class="myPosted-out">{{item.isCheck?'':'已被下架，请重新编辑'}}</span>
+                      <span>
+                          <router-link :to="{path: '/release', query: {product_id: item.product_id}}" class="myPosted-edit">编辑</router-link>
+                          <a class="myPosted-edit" @click="delProduct(item.product_id, index)">删除</a>
+                      </span>
                   </section>
               </li>
           </ul>
@@ -90,8 +93,13 @@ export default {
             }
         }
         .myPosted-item-bottom {
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
             line-height: 1.8rem;
+            padding: 0 .6rem;
+            .myPosted-out {
+                @include sc(.6rem, rgb(36, 35, 35));    
+            }
             .myPosted-edit {
                 @include sc(.6rem, rgb(36, 35, 35));
                 border: .001rem solid rgb(36, 35, 35);

@@ -3,9 +3,9 @@
         <Header head-title='分类'></Header>
         <section>
             <ul class="sortLists">
-                <router-link :to="{path: '/sortList', query: {name: item}}" v-for="(item, index) in sortLists" :key="index">
+                <router-link :to="{path: '/sortList', query: {sort_id: item.sort_id, sortName: item.sortName}}" v-for="item in sortLists" :key="item.sort_id">
                     <li>
-                        <span>{{item}}</span>
+                        <span>{{item.sortName}}</span>
                     </li>
                 </router-link>
             </ul>
@@ -17,19 +17,27 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getSorts } from "../../service/api";
 
 export default {
     data() {
         return {
-            sortLists: [
-                '手机数码','图书教材','家用电器','运动户外','美妆','衣服','游戏'
-            ]
+            sortLists: []
         }
     },
     components: {
         Header,
         Footer,
-    }
+    },
+    mounted() {
+        this.init();
+    },
+    methods: {
+        async init() {
+            const result = await getSorts();
+            this.sortLists = result;
+        }
+    },
 }
 </script>
 

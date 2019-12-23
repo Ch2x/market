@@ -1,4 +1,5 @@
-const baseUrl = 'http://localhost:3000';
+import { baseUrl } from '../config/env';
+
 
 export default async (url='', data={}, type='GET', method='fetch') => {
     type = type.toUpperCase();

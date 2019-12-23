@@ -44,7 +44,7 @@
                     <div class="name">
                         <p>分类</p>
                     </div>
-                        <span>{{addSort?addSort:'选择分类'}}</span>
+                        <span>{{addSort?addSort.sortName:'选择分类'}}</span>
                         <span class="arrow">
                             <svg class="arrow-svg" fill="#bbb">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -180,9 +180,9 @@ export default {
         return;
       }
       if(this.$route.query.product_id) {
-        const result = await updateProduct(this.product_id, this.images, this.addSort, this.description, this.title, this.price);
+        const result = await updateProduct(this.product_id, this.images, this.addSort.sort_id, this.description, this.title, this.price);
       }else {
-        const confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort, this.description, this.title, this.price);
+        const confirmRes = await releaseProduct(this.userInfo.user_id, this.images, this.addSort.sort_id, this.description, this.title, this.price);
       }
       this.$router.go(-1);
     },

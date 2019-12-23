@@ -3,7 +3,7 @@
       <Header go-back="true"></Header>
       <section class="shopDetail">
             <section class="shopDetail_top">
-                    <img :src="'http://localhost:3000/img/' + product_user.avatar" class="shopDetail_avatar" v-if="product_user.avatar">
+                    <img :src="imgUrl + product_user.avatar" class="shopDetail_avatar" v-if="product_user.avatar">
                     <span class="shopDetail_avatar" v-else>
                         <svg class="shopDetail_avatar_svg">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -69,6 +69,7 @@
 import Header from "@/components/Header";
 import { getProductDetail, postComment, addCart, getAddState } from "@/service/api";
 import { mapState } from 'Vuex';
+import { imgUrl } from '../../config/env';
 
 export default {
   data() {
@@ -83,6 +84,7 @@ export default {
       replyUser: '看对眼就留言，问问更多细节',
       showButton: true,
       addState: false,
+      imgUrl,
     };
   },
   directives: {

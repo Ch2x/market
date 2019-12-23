@@ -14,7 +14,7 @@ export default {
     },
 
     saveSort(state, payload) {
-        state.addSort = payload.sort;
+        state.addSort = payload;
     },
 
     changeAvatar(state, payload) {

@@ -3,8 +3,8 @@
         <Header go-back="true"></Header>
         <section>
             <ul class="sortLists">
-                <li v-for="(item, index) in sortLists" :key="index" @click="listClick(index)">
-                    <span>{{item}}</span>
+                <li v-for="item in sortLists" :key="item.sort_id" @click="listClick(item.sort_id)">
+                    <span>{{item.sortName}}</span>
                 </li>
             </ul>
         </section>
@@ -13,25 +13,31 @@
 <script>
 import Header from "@/components/Header";
 import { mapMutations } from 'Vuex';
+import { getSorts } from "../../service/api";
 
 export default {
     data() {
         return {
-             sortLists: [
-                '手机数码','图书教材','家用电器','运动户外','美妆','衣服','游戏'
-            ]  
+             sortLists: [],
         }
     },
     components: {
         Header,
+    },
+    mounted() {
+        this.init();
     },
     methods: {
         ...mapMutations([
             'saveSort',
         ]),
         listClick(index) {
-            this.saveSort({sort: this.sortLists[index]});
+            this.saveSort(this.sortLists[index-1]);
             this.$router.go(-1);
+        },
+        async init() {
+            const result = await getSorts();
+            this.sortLists = result;
         }
     }
 }

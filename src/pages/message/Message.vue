@@ -7,7 +7,7 @@
                     <li  v-for="(item, index) in list" :key="index">
                         <section v-if="item.isDelete" class="message_item">
                             <section class="message_left">
-                                <img :src='"http://localhost:3000/img/"+item.avatar'>
+                                <img :src='imgUrl+item.avatar'>
                             </section>
                             <section class="message_middle">
                                 <h5>{{item.userName}}</h5>
@@ -20,7 +20,7 @@
                         </section>
                         <router-link v-else class="message_item" :to="{path: '/shopDetail', query: {product_id: item.product_id}}" >
                             <section class="message_left">
-                                <img :src='"http://localhost:3000/img/"+item.avatar'>
+                                <img :src='imgUrl+item.avatar'>
                             </section>
                             <section class="message_middle">
                                 <h5>{{item.userName}}</h5>
@@ -44,12 +44,14 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { mapState } from 'Vuex';
-import { getMyMessage } from '../../service/api'
+import { getMyMessage } from '../../service/api';
+import { imgUrl } from '../../config/env';
 
 export default {
     data() {
         return {
             list: [],
+            imgUrl,
         }
     },
     components: {

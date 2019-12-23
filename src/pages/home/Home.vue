@@ -1,6 +1,6 @@
 <template>
     <div class="home_page paddingTop">
-        <Header head-title="二手买卖市场"></Header>
+        <Header head-title="校园电子商务系统"></Header>
         <div>
             <router-link :to="'/search'" class="link_search">
                 <input type="search" name="search" placeholder="请输入" class="input_search">

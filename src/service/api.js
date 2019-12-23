@@ -82,6 +82,8 @@ export const getBuyOrderDetail = (payload) => fetch('/product/getBuyOrderDetail'
 
 export const getcaptchas = () => fetch('/user/getcaptchas', {}, 'POST');
 
-export const changePassword = (payload) => fetch('/user/changePassword', {...payload}, 'GET')
+export const changePassword = (payload) => fetch('/user/changePassword', {...payload}, 'GET');
 
 export const setPassword = (payload) => fetch('/user/setPassword', {...payload}, 'POST');
+
+export const getSorts = () => fetch('/product/getSorts', {}, 'GET');
