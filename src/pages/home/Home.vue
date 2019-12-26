@@ -33,7 +33,7 @@ import Footer from "@/components/Footer";
 import ShopList from "@/components/ShopList";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { getProductLists } from "@/service/api";
-import { mapState } from "Vuex";
+import { mapState } from 'vuex';
 
 export default {
   data() {

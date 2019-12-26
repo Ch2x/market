@@ -28,7 +28,7 @@
 <script>
 import Header from "@/components/Header";
 import { getMyAddress, delAddress }  from '../../service/api';
-import { mapState } from 'Vuex';
+import { mapState } from 'vuex';
 
 export default {
     data() {

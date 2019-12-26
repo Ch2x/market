@@ -12,7 +12,7 @@
 </template>
 <script>
 import Header from "@/components/Header";
-import { mapMutations } from 'Vuex';
+import { mapMutations } from 'vuex';
 import { getSorts } from "../../service/api";
 
 export default {

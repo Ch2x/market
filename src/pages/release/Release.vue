@@ -76,7 +76,7 @@
 <script>
 import Header from "@/components/Header";
 import AlterTip from '@/components/AlterTip'
-import { mapState, mapMutations } from "Vuex";
+import { mapState, mapMutations } from 'vuex';
 import { releaseProduct, getProductDetail, updateProduct } from '@/service/api';
 
 export default {

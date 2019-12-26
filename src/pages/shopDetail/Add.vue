@@ -31,7 +31,7 @@
 import Header from "@/components/Header";
 import AlterTip from '@/components/AlterTip'
 import { postAddress } from '../../service/api';  
-import { mapState, mapMutations } from 'Vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
     data() {

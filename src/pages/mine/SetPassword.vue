@@ -20,7 +20,7 @@
 import Header from "@/components/Header";
 import AlterTip from '@/components/AlterTip';
 import { setPassword } from '@/service/api';
-import { mapState } from 'Vuex';
+import { mapState } from 'vuex';
 
 export default {
     data() {

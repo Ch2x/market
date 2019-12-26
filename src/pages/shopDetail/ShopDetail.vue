@@ -68,7 +68,7 @@
 <script>
 import Header from "@/components/Header";
 import { getProductDetail, postComment, addCart, getAddState } from "@/service/api";
-import { mapState } from 'Vuex';
+import { mapState } from 'vuex';
 import { imgUrl } from '../../config/env';
 
 export default {

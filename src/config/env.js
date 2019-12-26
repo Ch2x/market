@@ -1,5 +1,5 @@
-const imgUrl = 'http://192.168.1.167:3000/img/';
-const baseUrl = 'http://192.168.1.167:3000';
+const imgUrl = 'http://127.0.0.1:3000/img/';
+const baseUrl = 'http://127.0.0.1:3000';
 
 export {
     imgUrl,

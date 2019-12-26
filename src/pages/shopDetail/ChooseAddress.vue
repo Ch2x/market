@@ -22,7 +22,7 @@
 <script>
 import Header from "@/components/Header";
 import { getMyAddress, delAddress }  from '../../service/api';
-import { mapState, mapMutations } from 'Vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
     data() {

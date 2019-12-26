@@ -43,7 +43,7 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { mapState } from 'Vuex';
+import { mapState } from 'vuex';
 import { getMyMessage } from '../../service/api';
 import { imgUrl } from '../../config/env';
 

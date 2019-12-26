@@ -38,7 +38,7 @@
 </template>
 <script>
 import Header from "@/components/Header";
-import { mapState } from "Vuex" 
+import { mapState } from 'vuex' 
 import { getBuyOrderDetail } from "../../service/api"
 
 export default {
