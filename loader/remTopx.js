@@ -9,7 +9,6 @@ module.exports = function (content) {
   let regExp = /(\d*(\.\d+)?)rem/gi;
   if (regExp.test(_source)) {
     let res = _source.replace(regExp, function (value1, value2) {
-      console.log(value2)
       return (Number(value2) * 20).toFixed() + 'px';
     })
     return content.replace(_source, res)
