@@ -1,11 +1,13 @@
-import {setStore, getStore} from '../config/mUtil'
+import {
+    setStore
+} from '../config/mUtil'
 
 export default {
     saveUserInfo(state, payload) {
         state.userInfo = payload,
-        state.login = true
+            state.login = true
         state.avatar = payload.avatar,
-        setStore('user_id', payload.user_id);
+            setStore('user_id', payload.user_id);
     },
 
     logout(state) {

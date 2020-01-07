@@ -9,10 +9,16 @@ import infiniteScroll from 'vue-infinite-scroll';
 Vue.config.productionTip = false
 Vue.use(infiniteScroll)
 /* eslint-disable no-new */
+// new Vue({
+//   el: '#app',
+//   router,
+//   store,
+//   components: { App },
+//   template: '<App/>'
+// })
+
 new Vue({
-  el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount('#app');

@@ -5,7 +5,7 @@ export default async (url='', data={}, type='GET', method='fetch') => {
     type = type.toUpperCase();
     url = baseUrl + url;
 
-    if(type == 'GET') {
+    if(type === 'GET') {
         let dataStr = '';
         Object.keys(data).forEach ( key => {
             dataStr += key + '=' + data[key] + '&';
@@ -27,7 +27,7 @@ export default async (url='', data={}, type='GET', method='fetch') => {
             cache: 'force-cache'
         }
 
-        if(type == 'POST') {
+        if(type === 'POST') {
             Object.defineProperty(requestConfig, 'body', {
                 value: JSON.stringify(data)
             })
@@ -52,7 +52,7 @@ export default async (url='', data={}, type='GET', method='fetch') => {
             }
 
             let sendData= '';
-            if(type = 'POST') {
+            if(type === 'POST') {
                 sendData = JSON.stringify(data)
             }
 

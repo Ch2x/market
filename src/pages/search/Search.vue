@@ -1,53 +1,69 @@
 <template>
   <div class="paddingTop search_page">
-      <Header go-back='true' head-title="搜索"></Header>
-      <form class="search_form">
-            <input type="search" name="search" placeholder="请输入商品名称" class="search_input" v-model="searchValue">
-            <input type="submit" name="submit" class="search_submit" @click.prevent="submit">
-      </form>
-      <div class="sort_btn" v-if="searchList.length>0">
-            <div class="sort_item">
-                <div class="sort_name" @click="showFilter">
-                    <span>{{typeList[dataType]}}</span>
-                    <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="sort_icon">
-			    		<polygon points="0,3 10,3 5,8"/>
-			    	</svg>
-                </div>
-                <section class="sort_choose" v-show="sortFilter">
-                    <ul @click="chooseList($event)">
-                        <li class="choose_item" v-for="(item, index) in typeList" :key="index" :data='index'>
-                            <span :class="{choose_color: dataType == index}">{{item}}</span>
-                            <svg v-if="dataType==index">
-                              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                            </svg>
-                        </li>
-                    </ul>
-                </section>
-            </div>
+    <Header go-back="true" head-title="搜索"></Header>
+    <form class="search_form">
+      <input
+        type="search"
+        name="search"
+        placeholder="请输入商品名称"
+        class="search_input"
+        v-model="searchValue"
+      />
+      <input type="submit" name="submit" class="search_submit" @click.prevent="submit" />
+    </form>
+    <div class="sort_btn" v-if="searchList.length>0">
+      <div class="sort_item">
+        <div class="sort_name" @click="showFilter">
+          <span>{{typeList[dataType]}}</span>
+          <svg
+            width="10"
+            height="10"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            class="sort_icon"
+          >
+            <polygon points="0,3 10,3 5,8" />
+          </svg>
         </div>
-      <section>
-          <ul class="search_list">
-                <router-link :to="{path: '/shopDetail', query: {product_id: item.product_id}}" v-for="item in searchList" :key="item.product_id" class="search_item">
-                    <li>
-                        <div class="search_item_img">
-                            <img :src="item.images[0]">
-                        </div>
-                        <h5 class="search_title">{{item.title}}</h5>
-                        <div>
-                            <span>￥{{item.price}}</span>
-                        </div>
-                    </li>
-                </router-link>
+        <section class="sort_choose" v-show="sortFilter">
+          <ul @click="chooseList($event)">
+            <li class="choose_item" v-for="(item, index) in typeList" :key="index" :data="index">
+              <span :class="{choose_color: dataType == index}">{{item}}</span>
+              <svg v-if="dataType==index">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected" />
+              </svg>
+            </li>
           </ul>
-      </section>
-      <div class="tipFind" v-if="showResult">未找到相关产品或者内容</div>
+        </section>
+      </div>
+    </div>
+    <section>
+      <ul class="search_list">
+        <router-link
+          :to="{path: '/shopDetail', query: {product_id: item.product_id}}"
+          v-for="item in searchList"
+          :key="item.product_id"
+          class="search_item"
+        >
+          <li>
+            <div class="search_item_img">
+              <img :src="item.images[0]" />
+            </div>
+            <h5 class="search_title">{{item.title}}</h5>
+            <div>
+              <span>￥{{item.price}}</span>
+            </div>
+          </li>
+        </router-link>
+      </ul>
+    </section>
+    <div class="tipFind" v-if="showResult">未找到相关产品或者内容</div>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
 import { searchProduct } from "@/service/api";
-
 
 export default {
   data() {
@@ -57,10 +73,10 @@ export default {
       showResult: false,
       sortName: "",
       sortFilter: false,
-      dataType: '0',
-      typeList: ['综合排序', '价格从低到高', '价格从高到低', '最新发布'],
-      sortType: '',
-      sourceList: [],
+      dataType: "0",
+      typeList: ["综合排序", "价格从低到高", "价格从高到低", "最新发布"],
+      sortType: "",
+      sourceList: []
     };
   },
   components: {
@@ -70,11 +86,11 @@ export default {
     async submit() {
       this.searchList = [];
       this.dataType = 0;
-      if(!this.searchValue) {
+      if (!this.searchValue) {
         return;
       }
       const result = await searchProduct({ searchValue: this.searchValue });
-      if(result.length === 0 ) {
+      if (result.length === 0) {
         this.showResult = true;
       } else {
         this.showResult = false;
@@ -82,30 +98,30 @@ export default {
         this.sourceList = result;
       }
     },
-      showFilter() {
-          this.sortFilter = !this.sortFilter;
-      },
-      chooseList(event) {
-          let node;
-          console.log(event.target.nodeName.toUpperCase());
-            if (event.target.nodeName.toUpperCase() !== 'LI') {
-                node = event.target.parentNode;
-            } else {
-                node = event.target;
-            }
-            this.dataType = node.getAttribute('data');
-            console.log(this.dataType)
-            this.sortFilter = !this.sortFilter;
-            if(this.dataType == 0) {
-                this.searchList = this.sourceList;
-            } else if(this.dataType == 1) {
-                this.searchList.sort((a, b)=> a.price - b.price);
-            } else if(this.dataType == 2) {
-                this.searchList.sort((a, b)=> b.price - a.price);
-            } else if(this.dataType == 3) {
-              this.searchList.sort((a,b) => a.releaseTime -b.releaseTime);
-            }
+    showFilter() {
+      this.sortFilter = !this.sortFilter;
+    },
+    chooseList(event) {
+      let node;
+      console.log(event.target.nodeName.toUpperCase());
+      if (event.target.nodeName.toUpperCase() !== "LI") {
+        node = event.target.parentNode;
+      } else {
+        node = event.target;
       }
+      this.dataType = node.getAttribute("data");
+      console.log(this.dataType);
+      this.sortFilter = !this.sortFilter;
+      if (this.dataType == 0) {
+        this.searchList = this.sourceList;
+      } else if (this.dataType == 1) {
+        this.searchList.sort((a, b) => a.price - b.price);
+      } else if (this.dataType == 2) {
+        this.searchList.sort((a, b) => b.price - a.price);
+      } else if (this.dataType == 3) {
+        this.searchList.sort((a, b) => a.releaseTime - b.releaseTime);
+      }
+    }
   }
 };
 </script>
@@ -160,7 +176,7 @@ export default {
       white-space: nowrap;
     }
     span {
-         @include sc(.9rem, rgb(230, 63, 63));
+      @include sc(0.9rem, rgb(230, 63, 63));
     }
   }
 }
@@ -169,44 +185,43 @@ export default {
   text-align: center;
 }
 .sort_btn {
-    padding: .2rem 0;
-    font-size: .66rem;
-    background-color: #fff;
-    border-bottom: 0.025rem solid #f1f1f1;
-    position: relative;
-    .sort_item {
-       
-    }
+  padding: 0.2rem 0;
+  font-size: 0.66rem;
+  background-color: #fff;
+  border-bottom: 0.025rem solid #f1f1f1;
+  position: relative;
+  .sort_item {
+  }
 }
 
 .sort_name {
-    padding: 0 0.6rem;
-    >span {
-        display: inline-block;
-        width: 3rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+  padding: 0 0.6rem;
+  > span {
+    display: inline-block;
+    width: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .sort_choose {
-    width: 100%;
-    position: absolute;
-    background-color: #fff;
-    z-index: 99;
-    li {
-        padding: .6rem .6rem;
-    }
+  width: 100%;
+  position: absolute;
+  background-color: #fff;
+  z-index: 99;
+  li {
+    padding: 0.6rem 0.6rem;
+  }
 }
 .choose_item {
-    display: flex;
-    justify-content: space-between;
-    .choose_color {
-        color: blue;
-    }
-    >svg {
-        @include wh(.6rem, .6rem);
-    }
+  display: flex;
+  justify-content: space-between;
+  .choose_color {
+    color: blue;
+  }
+  > svg {
+    @include wh(0.6rem, 0.6rem);
+  }
 }
 </style>
 
